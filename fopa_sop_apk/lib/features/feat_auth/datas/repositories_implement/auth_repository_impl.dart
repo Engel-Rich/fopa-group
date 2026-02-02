@@ -1,7 +1,7 @@
-import 'package:fopa_sop_apk/features/feat_auth/domaines/dtos/login_dto.dart';
+import 'package:fopa_sop_apk/features/feat_auth/datas/dtos/login_dto.dart';
+import 'package:fopa_sop_apk/features/feat_auth/datas/dtos/register_user_dto.dart';
 import 'package:fopa_sop_apk/features/feat_auth/datas/services/auth_service.dart';
 import 'package:fopa_sop_apk/features/feat_auth/domaines/repositories/auth_repository.dart';
-import 'package:fopa_sop_apk/features/feat_auth/domaines/dtos/register_user_dto.dart';
 import 'package:fopa_sop_apk/features/feat_auth/datas/models/auth_response_model.dart';
 import 'package:fopa_sop_apk/features/feat_auth/datas/models/user_model.dart';
 
