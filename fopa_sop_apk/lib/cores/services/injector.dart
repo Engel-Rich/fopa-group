@@ -49,7 +49,7 @@ import 'package:fopa_sop_apk/features/feat_customer/domaines/repositories/custom
 import 'package:fopa_sop_apk/features/feat_customer/domaines/usecases/create_customer_usecase.dart';
 import 'package:fopa_sop_apk/features/feat_customer/domaines/usecases/list_customers_usecase.dart';
 import 'package:fopa_sop_apk/features/feat_customer/domaines/usecases/update_customer_usecase.dart';
-import 'package:fopa_sop_apk/features/feat_customer/domaines/controllers/customer_provider.dart';
+import 'package:fopa_sop_apk/features/feat_customer/presentations/controllers/customer_provider.dart';
 
 // Order imports
 import 'package:fopa_sop_apk/features/feat_order/datas/services/order_service.dart';

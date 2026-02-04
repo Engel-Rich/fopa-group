@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:fopa_sop_apk/features/feat_stock/domaines/dtos/create_stock_entry_dto.dart';
-import 'package:fopa_sop_apk/features/feat_stock/domaines/dtos/create_stock_exit_dto.dart';
+import 'package:fopa_sop_apk/features/feat_stock/datas/dtos/create_stock_entry_dto.dart';
+import 'package:fopa_sop_apk/features/feat_stock/datas/dtos/create_stock_exit_dto.dart';
 import 'package:fopa_sop_apk/features/feat_stock/datas/models/stock_movement_response_model.dart';
 import 'package:fopa_sop_apk/features/feat_stock/datas/models/stock_movement_list_model.dart';
 

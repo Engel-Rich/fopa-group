@@ -7,7 +7,7 @@ import 'package:fopa_sop_apk/cores/widget/extensions.dart';
 import 'package:fopa_sop_apk/cores/widget/simple_text.dart';
 import 'package:fopa_sop_apk/features/feat_auth/feat_auth.dart';
 import 'package:fopa_sop_apk/features/feat_category/presentations/controllers/category_provider.dart';
-import 'package:fopa_sop_apk/features/feat_customer/domaines/controllers/customer_provider.dart';
+import 'package:fopa_sop_apk/features/feat_customer/presentations/controllers/customer_provider.dart';
 import 'package:fopa_sop_apk/features/feat_order/presentations/controllers/order_provider.dart';
 import 'package:fopa_sop_apk/features/feat_product/presentations/controllers/product_provider.dart';
 

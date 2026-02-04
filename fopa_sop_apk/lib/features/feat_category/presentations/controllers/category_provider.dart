@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:fopa_sop_apk/cores/app_state.dart';
 import 'package:fopa_sop_apk/cores/services/local_storage_service.dart';
-import 'package:fopa_sop_apk/features/feat_category/domaines/dtos/create_category_dto.dart';
+import 'package:fopa_sop_apk/features/feat_category/datas/dtos/create_category_dto.dart';
 import 'package:fopa_sop_apk/features/feat_category/datas/models/category_response_model.dart';
 import 'package:fopa_sop_apk/features/feat_category/domaines/usecases/create_category_usecase.dart';
 import 'package:fopa_sop_apk/features/feat_category/domaines/usecases/list_categories_usecase.dart';

@@ -1,7 +1,7 @@
 import 'package:fopa_sop_apk/features/feat_product/datas/services/product_service.dart';
 import 'package:fopa_sop_apk/features/feat_product/domaines/repositories/product_repository.dart';
-import 'package:fopa_sop_apk/features/feat_product/domaines/dtos/create_product_dto.dart';
-import 'package:fopa_sop_apk/features/feat_product/domaines/dtos/update_product_dto.dart';
+import 'package:fopa_sop_apk/features/feat_product/datas/dtos/create_product_dto.dart';
+import 'package:fopa_sop_apk/features/feat_product/datas/dtos/update_product_dto.dart';
 import 'package:fopa_sop_apk/features/feat_product/datas/models/product_response_model.dart';
 
 class ProductRepositoryImpl implements ProductRepository {

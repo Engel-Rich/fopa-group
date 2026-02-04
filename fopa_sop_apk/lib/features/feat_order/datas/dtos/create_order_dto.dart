@@ -1,4 +1,4 @@
-import 'package:fopa_sop_apk/features/feat_order/domaines/dtos/create_order_item_dto.dart';
+import 'package:fopa_sop_apk/features/feat_order/datas/dtos/create_order_item_dto.dart';
 
 class CreateOrderDto {
   final String customerId;

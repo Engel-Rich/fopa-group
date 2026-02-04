@@ -6,7 +6,7 @@ import 'package:fopa_sop_apk/cores/widget/app_buttons.dart';
 import 'package:fopa_sop_apk/cores/widget/list_skeleton.dart';
 import 'package:fopa_sop_apk/cores/widget/simple_text.dart';
 import 'package:fopa_sop_apk/cores/widget/textfield_app.dart';
-import 'package:fopa_sop_apk/features/feat_customer/domaines/controllers/customer_provider.dart';
+import 'package:fopa_sop_apk/features/feat_customer/presentations/controllers/customer_provider.dart';
 import 'package:fopa_sop_apk/features/feat_customer/presentations/widgets/customer_component.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';

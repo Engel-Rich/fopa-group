@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:fopa_sop_apk/cores/app_state.dart';
 import 'package:fopa_sop_apk/cores/services/local_storage_service.dart';
-import 'package:fopa_sop_apk/features/feat_customer/domaines/dtos/create_customer_dto.dart';
-import 'package:fopa_sop_apk/features/feat_customer/domaines/dtos/update_customer_dto.dart';
+import 'package:fopa_sop_apk/features/feat_customer/datas/dtos/create_customer_dto.dart';
+import 'package:fopa_sop_apk/features/feat_customer/datas/dtos/update_customer_dto.dart';
 import 'package:fopa_sop_apk/features/feat_customer/datas/models/customer_response_model.dart';
 import 'package:fopa_sop_apk/features/feat_customer/domaines/usecases/create_customer_usecase.dart';
 import 'package:fopa_sop_apk/features/feat_customer/domaines/usecases/list_customers_usecase.dart';

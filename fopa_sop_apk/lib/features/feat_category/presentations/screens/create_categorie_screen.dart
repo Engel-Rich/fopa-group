@@ -4,7 +4,7 @@ import 'package:fopa_sop_apk/cores/widget/app_buttons.dart';
 import 'package:fopa_sop_apk/cores/widget/simple_text.dart';
 import 'package:fopa_sop_apk/cores/widget/textfield_app.dart';
 import 'package:fopa_sop_apk/features/feat_category/presentations/controllers/category_provider.dart';
-import 'package:fopa_sop_apk/features/feat_category/domaines/dtos/create_category_dto.dart';
+import 'package:fopa_sop_apk/features/feat_category/datas/dtos/create_category_dto.dart';
 import 'package:fopa_sop_apk/features/feat_category/datas/models/category_response_model.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';

@@ -6,7 +6,7 @@ import 'package:fopa_sop_apk/cores/size_config.dart';
 import 'package:fopa_sop_apk/cores/widget/extensions.dart';
 import 'package:fopa_sop_apk/cores/widget/simple_text.dart';
 import 'package:fopa_sop_apk/cores/widget/textfield_app.dart';
-import 'package:fopa_sop_apk/features/feat_order/domaines/dtos/add_payment_dto.dart';
+import 'package:fopa_sop_apk/features/feat_order/datas/dtos/add_payment_dto.dart';
 import 'package:fopa_sop_apk/features/feat_order/datas/models/order_response_model.dart';
 import 'package:fopa_sop_apk/features/feat_order/datas/models/order_status.dart';
 import 'package:fopa_sop_apk/features/feat_order/datas/models/payment_method.dart';

@@ -4,7 +4,7 @@ import 'package:fopa_sop_apk/cores/routes.dart';
 import 'package:fopa_sop_apk/cores/size_config.dart';
 import 'package:fopa_sop_apk/cores/services/injector.dart';
 import 'package:fopa_sop_apk/features/feat_auth/feat_auth.dart';
-import 'package:fopa_sop_apk/features/feat_customer/domaines/controllers/customer_provider.dart';
+import 'package:fopa_sop_apk/features/feat_customer/presentations/controllers/customer_provider.dart';
 import 'package:fopa_sop_apk/features/feat_product/presentations/controllers/product_provider.dart';
 import 'package:fopa_sop_apk/features/feat_order/presentations/controllers/order_provider.dart';
 import 'package:fopa_sop_apk/features/feat_report/presentations/controllers/report_provider.dart';

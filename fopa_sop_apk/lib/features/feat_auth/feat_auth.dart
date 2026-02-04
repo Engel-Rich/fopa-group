@@ -2,8 +2,8 @@
 // This file exports all public classes and models for easy importing
 
 // DTOs
-export 'domaines/dtos/login_dto.dart';
-export 'domaines/dtos/refresh_token_dto.dart';
+export 'datas/dtos/login_dto.dart';
+export 'datas/dtos/refresh_token_dto.dart';
 
 // Models
 export 'datas/models/user_model.dart';

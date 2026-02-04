@@ -7,7 +7,7 @@ import 'package:fopa_sop_apk/cores/widget/textfield_app.dart';
 import 'package:fopa_sop_apk/features/feat_customer/datas/dtos/create_customer_dto.dart';
 import 'package:fopa_sop_apk/features/feat_customer/datas/dtos/update_customer_dto.dart';
 import 'package:fopa_sop_apk/features/feat_customer/datas/models/customer_response_model.dart';
-import 'package:fopa_sop_apk/features/feat_customer/domaines/controllers/customer_provider.dart';
+import 'package:fopa_sop_apk/features/feat_customer/presentations/controllers/customer_provider.dart';
 import 'package:fopa_sop_apk/features/feat_user/domaines/dtos/create_user_dto.dart';
 import 'package:fopa_sop_apk/features/feat_auth/datas/models/user_model.dart';
 import 'package:fopa_sop_apk/features/feat_user/domaines/dtos/update_user_dto.dart';
