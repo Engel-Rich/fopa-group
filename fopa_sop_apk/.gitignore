@@ -50,3 +50,5 @@ app.*.map.json
 **/package-lock.json
 **/npm-debug.log
 **/yarn-error.log
+**/dist/
+**/build/
