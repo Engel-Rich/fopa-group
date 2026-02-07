@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:fopa_sop_apk/cores/app_theme.dart';
+import 'package:fopa_sop_apk/cores/routes.dart';
 import 'package:fopa_sop_apk/cores/size_config.dart';
+import 'package:fopa_sop_apk/cores/utils.dart';
 import 'package:fopa_sop_apk/cores/widget/app_buttons.dart';
 import 'package:fopa_sop_apk/cores/widget/simple_text.dart';
 import 'package:fopa_sop_apk/cores/widget/textfield_app.dart';
 import 'package:fopa_sop_apk/features/feat_auth/presentation/controllers/auth_provider.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -82,11 +85,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     ],
                   ),
                   spacerHeight(60),
+
                   CustomAppPrimaryButton(
                     title: "Se connecter",
-                    onPressed: () {
+                    onPressed: () async {
                       if (formKey.currentState!.validate()) {
-                        authProvider.login(context);
+                        await handleLongin(authProvider, context);
                       }
                     },
                     height: 55,
@@ -96,6 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     withDefaultLoader: true,
                     isLoading: authProvider.loginState.isLoading,
                   ),
+
                   Spacer(),
                   // conditions d'utilisation et politique de confidentialité
                   Text.rich(
@@ -143,5 +148,28 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> handleLongin(
+    AuthProvider authProvider,
+    BuildContext context,
+  ) async {
+    await authProvider.login(context);
+    if (context.mounted) {
+      if (authProvider.loginState.hasError) {
+        Utils.showInfoSnackBar(
+          context,
+          authProvider.loginState.errorModel?.error ??
+              "Erreur lors de la connexion",
+        );
+      } else if (authProvider.loginState.hasNotNullData) {
+        final authResponse = authProvider.loginState.data!;
+        await authProvider.storeUserToken(authResponse.toUserToken());
+        await authProvider.storeUser(authResponse.user);
+        if (context.mounted) {
+          context.pushReplacementNamed(AppRoutes.homeRoute);
+        }
+      }
+    }
   }
 }

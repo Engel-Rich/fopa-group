@@ -5,8 +5,6 @@ import 'package:fopa_sop_apk/cores/error_hanlder/error_model.dart';
 
 enum AppStatus { starting, error, loading, data }
 
-enum RequestStatus { starting, waiting, completed }
-
 class AppState<T> {
   AppStatus status;
   T? data;

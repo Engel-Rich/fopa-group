@@ -8,7 +8,7 @@ class CreateStockEntryDto {
     required this.quantity,
     required this.unitPrice,
   });
-
+  
   Map<String, dynamic> toJson() {
     return {
       'productId': productId,

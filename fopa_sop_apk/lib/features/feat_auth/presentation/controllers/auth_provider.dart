@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:fopa_sop_apk/cores/app_state.dart';
 import 'package:fopa_sop_apk/cores/routes.dart';
 import 'package:fopa_sop_apk/cores/services/local_storage_service.dart';
-import 'package:fopa_sop_apk/cores/utils.dart';
 import 'package:fopa_sop_apk/features/feat_auth/datas/dtos/login_dto.dart';
 import 'package:fopa_sop_apk/features/feat_auth/datas/dtos/register_user_dto.dart';
 import 'package:fopa_sop_apk/features/feat_auth/datas/models/auth_response_model.dart';
 import 'package:fopa_sop_apk/features/feat_auth/datas/models/user_model.dart';
+import 'package:fopa_sop_apk/features/feat_auth/datas/models/user_token.dart';
 import 'package:fopa_sop_apk/features/feat_auth/domaines/usecases/login_usecase.dart';
 import 'package:fopa_sop_apk/features/feat_auth/domaines/usecases/register_user_usecase.dart';
 import 'package:fopa_sop_apk/features/feat_auth/domaines/usecases/refresh_token_usecase.dart';
@@ -56,33 +56,7 @@ class AuthProvider extends ChangeNotifier {
     );
     loginState = AppState.loading();
     notifyListeners();
-
     loginState = await loginUseCase.call(loginDto);
-
-    if (loginState.hasError) {
-      notifyListeners();
-      Utils.showInfoSnackBar(
-        context,
-        loginState.errorModel?.error ?? "Erreur lors de la connexion",
-      );
-      return;
-    }
-
-    if (loginState.hasNotNullData) {
-      final authResponse = loginState.data!;
-      // Stocker le token
-      await localStorageService.storeUserToken(authResponse.toUserToken());
-      // Stocker l'utilisateur
-      await localStorageService.storeUser(authResponse.user);
-      // Mettre à jour currentUser
-      currentUser = authResponse.user;
-      emailController.clear();
-      passwordController.clear();
-      if (context.mounted) {
-        context.pushReplacementNamed(AppRoutes.homeRoute);
-      }
-    }
-
     notifyListeners();
   }
 
@@ -113,22 +87,18 @@ class AuthProvider extends ChangeNotifier {
   Future<void> refreshToken(String refreshToken) async {
     refreshTokenState = AppState.loading();
     notifyListeners();
-
     refreshTokenState = await refreshTokenUseCase.call(refreshToken);
-
     if (refreshTokenState.hasError) {
       notifyListeners();
       return;
     }
-
     if (refreshTokenState.hasNotNullData) {
-      final token = localStorageService.getUserToken();
-      if (token != null) {
-        token.token = refreshTokenState.data!;
-        await localStorageService.storeUserToken(token);
-      }
+      final userToken = UserToken(
+        token: refreshTokenState.data!,
+        refreshToken: refreshToken,
+      );
+      await storeUserToken(userToken);
     }
-
     notifyListeners();
   }
 
@@ -156,18 +126,14 @@ class AuthProvider extends ChangeNotifier {
       }
       return;
     }
-
     // Utilisateur trouvé, mettre à jour currentUser
     currentUser = user;
     notifyListeners();
-
     // Rediriger vers Home
     if (context.mounted) {
       context.pushReplacementNamed(AppRoutes.homeRoute);
     }
-
-    // Faire un auth/me silencieux pour mettre à jour les infos
-    await getMe();
+    getMe();
   }
 
   Future<void> logout(BuildContext context) async {
@@ -185,5 +151,18 @@ class AuthProvider extends ChangeNotifier {
     if (context.mounted) {
       context.pushReplacementNamed(AppRoutes.loginRoute);
     }
+  }
+
+  void clearControllers() {
+    emailController.clear();
+    passwordController.clear();
+  }
+
+  Future<void> storeUserToken(UserToken userToken) async {
+    await localStorageService.storeUserToken(userToken);
+  }
+
+  Future<void> storeUser(UserModel user) async {
+    await localStorageService.storeUser(user);
   }
 }

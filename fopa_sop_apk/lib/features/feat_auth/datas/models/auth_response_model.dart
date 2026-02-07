@@ -29,9 +29,6 @@ class AuthResponseModel {
   }
 
   UserToken toUserToken() {
-    return UserToken(
-      token: accessToken,
-      refreshToken: refreshToken,
-    );
+    return UserToken(token: accessToken, refreshToken: refreshToken);
   }
 }
