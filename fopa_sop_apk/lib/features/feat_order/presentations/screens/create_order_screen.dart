@@ -13,19 +13,24 @@ import 'package:fopa_sop_apk/features/feat_order/presentations/widgets/add_produ
 import 'package:fopa_sop_apk/features/feat_order/presentations/widgets/custommer_search_component.dart';
 import 'package:fopa_sop_apk/features/feat_order/presentations/widgets/order_product_component.dart';
 import 'package:fopa_sop_apk/features/feat_order/presentations/widgets/order_sommary_component.dart';
-import 'package:fopa_sop_apk/features/feat_product/datas/models/product_response_model.dart';
+import 'package:fopa_sop_apk/features/feat_product/datas/models/product_with_config_model.dart';
 import 'package:fopa_sop_apk/features/feat_product/presentations/controllers/product_provider.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class OrderProduct {
-  final ProductResponseModel product;
+  final ProductWithConfigModel product;
   int quantity;
+  double unitPrice;
 
-  OrderProduct({required this.product, required this.quantity});
+  OrderProduct({
+    required this.product,
+    required this.quantity,
+    required this.unitPrice,
+  });
 
-  double get total => product.price * quantity;
+  double get total => unitPrice * quantity;
 }
 
 class CreateOrderScreen extends StatefulWidget {
@@ -60,7 +65,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
     return _totalProducts + _currentDebt;
   }
 
-  void _addProduct(ProductResponseModel product, int quantity) {
+  void _addProduct(ProductWithConfigModel product, int quantity) {
     final existingIndex = _orderProducts.indexWhere(
       (item) => item.product.id == product.id,
     );
@@ -69,7 +74,13 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
       if (existingIndex >= 0) {
         _orderProducts[existingIndex].quantity += quantity;
       } else {
-        _orderProducts.add(OrderProduct(product: product, quantity: quantity));
+        _orderProducts.add(
+          OrderProduct(
+            product: product,
+            quantity: quantity,
+            unitPrice: product.defaultUnitPrice,
+          ),
+        );
       }
     });
   }
@@ -90,14 +101,24 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
     });
   }
 
+  void _updateProductUnitPrice(int index, double unitPrice) {
+    setState(() {
+      _orderProducts[index].unitPrice = unitPrice;
+    });
+  }
+
   void _showAddProductDialog() {
+    final productProvider = GetIt.instance<ProductProvider>();
+    final customerProducts =
+        productProvider.listProductsWithConfigState.data ?? [];
+
     showDialog(
       context: context,
       builder: (context) => AddProductDialog(
         onProductSelected: (product, quantity) {
           _addProduct(product, quantity);
         },
-        products: GetIt.instance<ProductProvider>().localProducts,
+        products: customerProducts,
       ),
     );
   }
@@ -163,10 +184,12 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
             (orderProduct) => CreateOrderItemDto(
               productId: orderProduct.product.id,
               quantity: orderProduct.quantity,
+              unitPrice: orderProduct.unitPrice,
             ),
           )
           .toList(),
       amountPaid: _amountPaid,
+      packages: _packages,
     );
 
     // Créer la commande via le provider
@@ -213,10 +236,18 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
               children: [
                 CustomerSearchComponent(
                   selectedCustomer: _selectedCustomer,
-                  onChanged: (customer) {
+                  onChanged: (customer) async {
                     setState(() {
                       _selectedCustomer = customer;
+                      _orderProducts.clear();
                     });
+                    if (customer != null) {
+                      await GetIt.instance<ProductProvider>()
+                          .listProductsWithConfig(
+                            customer.id,
+                            activeOnly: true,
+                          );
+                    }
                   },
                 ),
                 spacerHeight(12),
@@ -249,8 +280,12 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                       return OrderProductComponent(
                         product: _orderProducts[index].product,
                         quantity: _orderProducts[index].quantity,
+                        unitPrice: _orderProducts[index].unitPrice,
                         onQuantityChanged: (qty) {
                           _updateProductQuantity(index, qty);
+                        },
+                        onUnitPriceChanged: (value) {
+                          _updateProductUnitPrice(index, value);
                         },
                         onRemove: () {
                           _removeProduct(index);

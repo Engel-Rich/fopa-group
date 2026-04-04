@@ -135,29 +135,29 @@ class _CreateCustomerScreenState extends State<CreateCustomerScreen> {
                       keyboardType: TextInputType.text,
                       controller: addressController,
                     ),
-                    spacerHeight(20),
-                    SimpleText(text: "Mot de passe du client"),
-                    spacerHeight(8),
-                    TextFieldApp(
-                      hintText: "password123",
-                      radius: 8,
-                      maxLines: 1,
-                      keyboardType: TextInputType.visiblePassword,
-                      obscureText: true,
-                      controller: passwordController,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Le mot de passe est requis";
-                        }
-                        if (value.length < 6) {
-                          return "Le mot de passe doit contenir au moins 6 caractères";
-                        }
-                        return null;
-                      },
-                    ),
-                    spacerHeight(30),
+                    // spacerHeight(20),
+                    // SimpleText(text: "Mot de passe du client"),
+                    // spacerHeight(8),
+                    // TextFieldApp(
+                    //   hintText: "password123",
+                    //   radius: 8,
+                    //   maxLines: 1,
+                    //   keyboardType: TextInputType.visiblePassword,
+                    //   obscureText: true,
+                    //   controller: passwordController,
+                    //   validator: (value) {
+                    //     if (value == null || value.isEmpty) {
+                    //       return "Le mot de passe est requis";
+                    //     }
+                    //     if (value.length < 6) {
+                    //       return "Le mot de passe doit contenir au moins 6 caractères";
+                    //     }
+                    //     return null;
+                    //   },
+                    // ),
+                    spacerHeight(60),
                     CustomAppPrimaryButton(
-                      title: "Créer le client",
+                      title: "Enregistrer le client",
                       onPressed: () async {
                         if (formKey.currentState!.validate()) {
                           if (widget.customer != null) {
@@ -230,7 +230,7 @@ class _CreateCustomerScreenState extends State<CreateCustomerScreen> {
         name: nameController.text,
         phone: phoneController.text,
         username: _generateUsername(),
-        password: passwordController.text,
+        password: passwordController.text.trim().isEmpty? phoneController.text : passwordController.text,
         role: UserRole.CLIENT,
       ),
       address: addressController.text.isNotEmpty

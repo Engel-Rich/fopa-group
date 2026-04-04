@@ -4,6 +4,7 @@ import type { IOrderRepository } from '../../../domain/repositories/order.reposi
 import type { IOrderItemRepository } from '../../../domain/repositories/order-item.repository.interface';
 import type { ICustomerRepository } from '../../../domain/repositories/customer.repository.interface';
 import type { IProductRepository } from '../../../domain/repositories/product.repository.interface';
+import type { ICustomerProductPriceRepository } from '../../../domain/repositories/customer-product-price.repository.interface';
 import type { IStockMovementRepository } from '../../../domain/repositories/stock-movement.repository.interface';
 import type { IPaymentRepository } from '../../../domain/repositories/payment.repository.interface';
 import {
@@ -31,6 +32,8 @@ export class CreateOrderUseCase {
     private readonly customerRepository: ICustomerRepository,
     @Inject('IProductRepository')
     private readonly productRepository: IProductRepository,
+    @Inject('ICustomerProductPriceRepository')
+    private readonly customerProductPriceRepository: ICustomerProductPriceRepository,
     @Inject('IStockMovementRepository')
     private readonly stockMovementRepository: IStockMovementRepository,
     @Inject('IPaymentRepository')
@@ -71,7 +74,14 @@ export class CreateOrderUseCase {
         throw new InsufficientStockException(product.name, product.quantity, itemDto.quantity);
       }
 
-      const itemSubtotal = product.price * itemDto.quantity;
+      const requestedUnitPrice = itemDto.unitPrice != null
+        ? Number(itemDto.unitPrice)
+        : Number(product.price);
+      if (requestedUnitPrice <= 0) {
+        throw new InvalidOrderException(`Prix unitaire invalide pour le produit ${product.name}`);
+      }
+
+      const itemSubtotal = requestedUnitPrice * itemDto.quantity;
       subtotal += itemSubtotal;
 
       // Créer l'order item (sans orderId pour l'instant)
@@ -80,7 +90,7 @@ export class CreateOrderUseCase {
         itemDto.productId,
         product.name,
         itemDto.quantity,
-        product.price,
+        requestedUnitPrice,
       );
       orderItems.push(orderItem);
 
@@ -89,11 +99,21 @@ export class CreateOrderUseCase {
         itemDto.productId,
         StockMovementType.VENTE,
         itemDto.quantity,
-        product.price,
+        requestedUnitPrice,
         undefined,
         userId,
       );
       stockMovements.push(stockMovement);
+
+      const existingConfig = await this.customerProductPriceRepository.findOne(dto.customerId, itemDto.productId);
+      const referencePrice = existingConfig ? Number(existingConfig.unitPrice) : Number(product.price);
+      if (Number(requestedUnitPrice) !== Number(referencePrice)) {
+        await this.customerProductPriceRepository.upsert(
+          dto.customerId,
+          itemDto.productId,
+          requestedUnitPrice,
+        );
+      }
     }
 
     const totalAmount = subtotal + previousDebt;
@@ -308,4 +328,5 @@ export class CreateOrderUseCase {
       await queryRunner.release();
     }
   }
+  
 }

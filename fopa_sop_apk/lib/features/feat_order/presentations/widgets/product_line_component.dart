@@ -19,16 +19,15 @@ class ProductLineComponent extends StatelessWidget {
           Expanded(
             child: SimpleText(
               text: orderProduct.product.name,
-              size: 18,
+              size: 16,
               color: context.titleLargeColor,
-              weight: FontWeight.w700,
             ),
           ),
           SimpleText(
             text: "${orderProduct.total.toInt()} FCFA",
-            size: 18,
+            size: 16,
             color: context.titleLargeColor,
-            weight: FontWeight.w700,
+            weight: FontWeight.w600,
           ),
         ],
       ),

@@ -31,11 +31,11 @@ class CategorieScreen extends StatelessWidget {
             child: Consumer<CategoryProvider>(
               builder: (context, categoryProvider, child) {
                 // Charger les catégories si la liste est vide
-                if (categoryProvider.localCategories.isEmpty) {
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    categoryProvider.getSilences();
-                  });
-                }
+                // if (categoryProvider.localCategories.isEmpty) {
+                //   WidgetsBinding.instance.addPostFrameCallback((_) {
+                //     categoryProvider.getSilences();
+                //   });
+                // }
 
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

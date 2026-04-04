@@ -7,7 +7,7 @@ export class OrderItemMapper {
     const item = new OrderItem(
       entity.orderId,
       entity.productId,
-      entity.productName,
+      entity.name,
       entity.quantity,
       parseFloat(entity.unitPrice.toString()),
     );
@@ -24,7 +24,7 @@ export class OrderItemMapper {
     if (domain.id) entity.id = domain.id;
     entity.orderId = domain.orderId;
     entity.productId = domain.productId;
-    entity.productName = domain.productName;
+    entity.name = domain.name;
     entity.quantity = domain.quantity;
     entity.unitPrice = domain.unitPrice;
     entity.subtotal = domain.subtotal;

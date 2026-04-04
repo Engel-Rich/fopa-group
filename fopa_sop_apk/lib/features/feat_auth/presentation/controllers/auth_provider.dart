@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fopa_sop_apk/cores/app_state.dart';
 import 'package:fopa_sop_apk/cores/routes.dart';
 import 'package:fopa_sop_apk/cores/services/local_storage_service.dart';
+import 'package:fopa_sop_apk/cores/utils.dart';
 import 'package:fopa_sop_apk/features/feat_auth/datas/dtos/login_dto.dart';
 import 'package:fopa_sop_apk/features/feat_auth/datas/dtos/register_user_dto.dart';
 import 'package:fopa_sop_apk/features/feat_auth/datas/models/auth_response_model.dart';
@@ -139,11 +140,14 @@ class AuthProvider extends ChangeNotifier {
   Future<void> logout(BuildContext context) async {
     try {
       await logoutUseCase.call();
+      localStorageService.logoutUser();
+      if (context.mounted) {
+        context.pushReplacementNamed(AppRoutes.loginRoute);
+      }
     } catch (e) {
-      // Continuer même en cas d'erreur
+      Utils.printLog(e);
     }
     localStorageService.logoutUser();
-    currentUser = null;
     loginState = AppState();
     registerState = AppState();
     refreshTokenState = AppState();

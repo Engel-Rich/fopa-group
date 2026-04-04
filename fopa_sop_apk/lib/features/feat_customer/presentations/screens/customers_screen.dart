@@ -29,11 +29,11 @@ class CustomersScreen extends StatelessWidget {
             child: Consumer<CustomerProvider>(
               builder: (context, customerProvider, child) {
                 // Charger les clients si la liste est vide
-                if (customerProvider.localCustomers.isEmpty) {
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    customerProvider.getSilences();
-                  });
-                }
+                // if (customerProvider.localCustomers.isEmpty) {
+                //   WidgetsBinding.instance.addPostFrameCallback((_) {
+                //     customerProvider.getSilences();
+                //   });
+                // }
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -67,7 +67,9 @@ class CustomersScreen extends StatelessWidget {
                       Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
+                            spacerHeight(20),
                             SimpleText(
                               text: "Aucun client disponible",
                               color: context.titleLargeColor,
@@ -81,6 +83,7 @@ class CustomersScreen extends StatelessWidget {
                               height: 45,
                               radius: 8,
                               fontSize: 14,
+                              width: SizeConfig.screenWidth * 0.5,
                               fontWeight: FontWeight.w600,
                             ),
                           ],

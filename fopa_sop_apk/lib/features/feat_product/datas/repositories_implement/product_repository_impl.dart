@@ -3,6 +3,7 @@ import 'package:fopa_sop_apk/features/feat_product/domaines/repositories/product
 import 'package:fopa_sop_apk/features/feat_product/datas/dtos/create_product_dto.dart';
 import 'package:fopa_sop_apk/features/feat_product/datas/dtos/update_product_dto.dart';
 import 'package:fopa_sop_apk/features/feat_product/datas/models/product_response_model.dart';
+import 'package:fopa_sop_apk/features/feat_product/datas/models/product_with_config_model.dart';
 
 class ProductRepositoryImpl implements ProductRepository {
   final ProductService productService;
@@ -17,6 +18,17 @@ class ProductRepositoryImpl implements ProductRepository {
   @override
   Future<List<ProductResponseModel>> listProducts({bool? activeOnly}) async {
     return await productService.listProducts(activeOnly: activeOnly);
+  }
+
+  @override
+  Future<List<ProductWithConfigModel>> listProductsWithConfig(
+    String customerId, {
+    bool? activeOnly,
+  }) async {
+    return await productService.listProductsWithConfig(
+      customerId,
+      activeOnly: activeOnly,
+    );
   }
 
   @override

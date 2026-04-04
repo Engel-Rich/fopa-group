@@ -28,4 +28,9 @@ class UserRepositoryImpl implements UserRepository {
   Future<void> deleteUser(String id) async {
     return await userService.deleteUser(id);
   }
+
+  // @override
+  // Future<int> singOut() async {
+  //   return await userService.signOut();
+  // }
 }

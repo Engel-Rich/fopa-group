@@ -25,7 +25,7 @@ Future<void> printWidget(BuildContext context) async {
           as RenderRepaintBoundary?;
   if (boundary == null) return;
 
-  final image = await boundary.toImage(pixelRatio: 3.0);
+  final image = await boundary.toImage(pixelRatio: 1.5);
   final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
   if (byteData == null) return;
   final listBytes = byteData.buffer.asUint8List();
@@ -34,5 +34,3 @@ Future<void> printWidget(BuildContext context) async {
   final posConnectAidlPlugin = PosConnectAidl();
   await posConnectAidlPlugin.printImage(pathImage: listBytes);
 }
-
-Future<void> convertPdfToImage(String pathPdf) async {}

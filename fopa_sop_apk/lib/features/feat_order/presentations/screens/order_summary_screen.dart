@@ -3,6 +3,7 @@ import 'package:dotted_line/dotted_line.dart';
 import 'package:fopa_sop_apk/cores/routes.dart';
 import 'package:fopa_sop_apk/cores/widget/app_buttons.dart';
 import 'package:fopa_sop_apk/cores/widget/extensions.dart';
+import 'package:fopa_sop_apk/features/feat_product/datas/models/product_with_config_model.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:fopa_sop_apk/cores/app_theme.dart';
@@ -105,18 +106,9 @@ class _ReceiptBody extends StatelessWidget {
     if (order.items == null) return [];
     return order.items!.map((item) {
       return OrderProduct(
-        product: ProductResponseModel(
-          id: item.productId,
-          name: item.productName,
-          categoryId: '',
-          quantity: 0,
-          price: item.unitPrice,
-          description: null,
-          isActive: true,
-          createdAt: null,
-          updatedAt: null,
-        ),
+        product: ProductWithConfigModel.fromJson(item.toJson()),
         quantity: item.quantity,
+        unitPrice: item.unitPrice,
       );
     }).toList();
   }

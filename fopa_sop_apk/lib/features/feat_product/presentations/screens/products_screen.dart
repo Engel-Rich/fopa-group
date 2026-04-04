@@ -29,11 +29,11 @@ class ProductsScreen extends StatelessWidget {
             child: Consumer<ProductProvider>(
               builder: (context, productProvider, child) {
                 // Charger les produits si la liste est vide
-                if (productProvider.localProducts.isEmpty) {
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    productProvider.getSilences();
-                  });
-                }
+                // if (productProvider.localProducts.isEmpty) {
+                //   WidgetsBinding.instance.addPostFrameCallback((_) {
+                //     productProvider.getSilences();
+                //   });
+                // }
 
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

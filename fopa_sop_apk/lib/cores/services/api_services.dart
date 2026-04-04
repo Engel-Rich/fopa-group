@@ -81,7 +81,7 @@ class InterceptorsWrapper extends Interceptor {
     };
     try {
       final token = GetIt.instance<LocalStorageService>().getUserToken()?.token;
-      Utils.printLog('Header Token $token');
+      Utils.printLog('Header Bearer $token');
       if (token != null) {
         data['Authorization'] = 'Bearer $token';
       }

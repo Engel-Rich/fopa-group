@@ -9,7 +9,8 @@ import 'package:fopa_sop_apk/cores/widget/simple_text.dart';
 import 'package:fopa_sop_apk/features/feat_order/datas/models/order_response_model.dart';
 import 'package:fopa_sop_apk/features/feat_order/presentations/screens/create_order_screen.dart';
 import 'package:fopa_sop_apk/features/feat_order/presentations/widgets/product_line_component.dart';
-import 'package:fopa_sop_apk/features/feat_product/datas/models/product_response_model.dart';
+// import 'package:fopa_sop_apk/features/feat_product/datas/models/product_response_model.dart';
+import 'package:fopa_sop_apk/features/feat_product/datas/models/product_with_config_model.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
@@ -72,7 +73,7 @@ class OrderSummaryPrintScreen extends StatelessWidget {
             balance: _balance,
             onPrint: () async {
               try {
-                // printImage("assets/logoap.jpg");
+                // await printImage("assets/logoap.jpg");
                 await printWidget(context);
                 if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -94,7 +95,7 @@ class OrderSummaryPrintScreen extends StatelessWidget {
   }
 }
 
-class _ReceiptBody extends StatelessWidget {
+class _ReceiptBody extends StatefulWidget {
   final OrderResponseModel order;
   final double totalProducts;
   final double subTotal;
@@ -111,29 +112,32 @@ class _ReceiptBody extends StatelessWidget {
     required this.onPrint,
   });
 
+  @override
+  State<_ReceiptBody> createState() => _ReceiptBodyState();
+}
+
+class _ReceiptBodyState extends State<_ReceiptBody> {
+  bool isLoadingPrint = false;
+
+  void setsLoadingPrint() {
+    isLoadingPrint = !isLoadingPrint;
+    setState(() {});
+  }
+
   List<OrderProduct> get _orderProducts {
-    if (order.items == null) return [];
-    return order.items!.map((item) {
+    if (widget.order.items == null) return [];
+    return widget.order.items!.map((item) {
       return OrderProduct(
-        product: ProductResponseModel(
-          id: item.productId,
-          name: item.productName,
-          categoryId: '',
-          quantity: 0,
-          price: item.unitPrice,
-          description: null,
-          isActive: true,
-          createdAt: null,
-          updatedAt: null,
-        ),
+        product: ProductWithConfigModel.fromJson(item.toJson()),
         quantity: item.quantity,
+        unitPrice: item.unitPrice,
       );
     }).toList();
   }
 
   @override
   Widget build(BuildContext context) {
-    final orderDate = order.createdAt;
+    final orderDate = widget.order.createdAt;
     final dateFormat = DateFormat('dd-MM-yyyy');
     final timeFormat = DateFormat('HH:mm');
 
@@ -165,23 +169,22 @@ class _ReceiptBody extends StatelessWidget {
                   ),
                   spacerHeight(12),
                   SimpleText(
-                    text: "Client: ${order.customer?.user?.name ?? ''}",
+                    text: "Client: ${widget.order.customer?.user?.name ?? ''}",
                     size: 15,
                     color: blackColor,
-                    weight: FontWeight.w700,
+                    weight: FontWeight.w500,
                   ),
                   SimpleText(
-                    text: "Tel: ${order.customer?.user?.phone ?? ''}",
+                    text: "Tel: ${widget.order.customer?.user?.phone ?? ''}",
                     size: 15,
                     color: blackColor,
-                    weight: FontWeight.w700,
                   ),
                   spacerHeight(15),
                   DottedLine(
                     dashColor: blackColor,
                     dashGapLength: 4,
                     dashRadius: 2,
-                    lineThickness: 3,
+                    lineThickness: 1,
                   ),
                   spacerHeight(20),
                   Row(
@@ -191,13 +194,13 @@ class _ReceiptBody extends StatelessWidget {
                         text: "Date: ${dateFormat.format(orderDate)}",
                         size: 15,
                         color: blackColor,
-                        weight: FontWeight.w700,
+                        weight: FontWeight.w500,
                       ),
                       SimpleText(
                         text: timeFormat.format(orderDate),
                         size: 15,
                         color: blackColor,
-                        weight: FontWeight.w700,
+                        weight: FontWeight.w500,
                       ),
                     ],
                   ),
@@ -206,7 +209,7 @@ class _ReceiptBody extends StatelessWidget {
                     dashColor: blackColor,
                     dashGapLength: 4,
                     dashRadius: 2,
-                    lineThickness: 3,
+                    lineThickness: 1,
                   ),
                   spacerHeight(15),
                   ..._orderProducts.map((orderProduct) {
@@ -217,7 +220,7 @@ class _ReceiptBody extends StatelessWidget {
                     dashColor: blackColor,
                     dashGapLength: 3,
                     dashRadius: 2,
-                    lineThickness: 3,
+                    lineThickness: 1,
                   ),
                   spacerHeight(15),
                   Row(
@@ -225,14 +228,14 @@ class _ReceiptBody extends StatelessWidget {
                     children: [
                       SimpleText(
                         text: "Total",
-                        size: 20,
-                        weight: FontWeight.w900,
+                        size: 18,
+                        weight: FontWeight.bold,
                         color: blackColor,
                       ),
                       SimpleText(
-                        text: "${balance.toInt()} FCFA",
-                        size: 20,
-                        weight: FontWeight.w900,
+                        text: "${widget.balance.toInt()} FCFA",
+                        size: 18,
+                        weight: FontWeight.bold,
                         color: blackColor,
                       ),
                     ],
@@ -240,25 +243,25 @@ class _ReceiptBody extends StatelessWidget {
                   spacerHeight(12),
                   _ReceiptSummaryRow(
                     label: "Total Produits",
-                    value: "${subTotal.toInt()} FCFA",
+                    value: "${widget.subTotal.toInt()} FCFA",
                     context: context,
                   ),
                   spacerHeight(6),
                   _ReceiptSummaryRow(
                     label: "Dette ",
-                    value: "${order.previousDebt.toInt()} FCFA",
+                    value: "${widget.order.previousDebt.toInt()} FCFA",
                     context: context,
                   ),
                   spacerHeight(6),
                   _ReceiptSummaryRow(
                     label: "Montant payé ",
-                    value: "${order.amountPaid.toInt()} FCFA",
+                    value: "${widget.order.amountPaid.toInt()} FCFA",
                     context: context,
                   ),
                   spacerHeight(6),
                   _ReceiptSummaryRow(
                     label: "Total à Payer",
-                    value: "${balance.toInt()} FCFA",
+                    value: "${widget.balance.toInt()} FCFA",
                     context: context,
                   ),
                   spacerHeight(20),
@@ -266,11 +269,11 @@ class _ReceiptBody extends StatelessWidget {
                   // spacerHeight(20),
                   SimpleText(
                     text: "THANK YOU",
-                    size: 20,
+                    size: 18,
                     weight: FontWeight.bold,
                     color: blackColor,
                   ),
-                  spacerHeight(50),
+                  spacerHeight(60),
                 ],
               ),
             ),
@@ -280,11 +283,18 @@ class _ReceiptBody extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: CustomAppPrimaryButton(
               title: "Imprimer",
-              onPressed: onPrint,
+              onPressed: () async {
+                setsLoadingPrint();
+                widget.onPrint.call();
+                await Future.delayed(const Duration(seconds: 2));
+                setsLoadingPrint();
+              },
               height: 55,
               radius: 8,
               fontSize: 16,
               fontWeight: FontWeight.w600,
+              withDefaultLoader: true,
+              isLoading: isLoadingPrint,
             ),
           ),
           spacerHeight(30),
@@ -312,15 +322,15 @@ class _ReceiptSummaryRow extends StatelessWidget {
       children: [
         SimpleText(
           text: label,
-          size: 19,
+          size: 17,
           color: this.context.titleLargeColor,
-          weight: FontWeight.w700,
+          weight: FontWeight.w500,
         ),
         SimpleText(
           text: value,
-          size: 19,
+          size: 17,
           color: this.context.titleLargeColor,
-          weight: FontWeight.w700,
+          weight: FontWeight.w600,
         ),
       ],
     );

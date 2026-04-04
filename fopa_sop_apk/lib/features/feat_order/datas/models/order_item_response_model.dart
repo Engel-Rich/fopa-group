@@ -2,7 +2,7 @@ class OrderItemResponseModel {
   final String id;
   final String orderId;
   final String productId;
-  final String productName;
+  final String name;
   final int quantity;
   final double unitPrice;
   final double subtotal;
@@ -12,7 +12,7 @@ class OrderItemResponseModel {
     required this.id,
     required this.orderId,
     required this.productId,
-    required this.productName,
+    required this.name,
     required this.quantity,
     required this.unitPrice,
     required this.subtotal,
@@ -24,7 +24,7 @@ class OrderItemResponseModel {
       id: json['id'] as String,
       orderId: json['orderId'] as String,
       productId: json['productId'] as String,
-      productName: json['productName'] as String,
+      name: json['name'] as String,
       quantity: json['quantity'] as int,
       unitPrice: (json['unitPrice'] as num).toDouble(),
       subtotal: (json['subtotal'] as num).toDouble(),
@@ -37,9 +37,9 @@ class OrderItemResponseModel {
       'id': id,
       'orderId': orderId,
       'productId': productId,
-      'productName': productName,
+      'name': name,
       'quantity': quantity,
-      'unitPrice': unitPrice,
+      'price': unitPrice,
       'subtotal': subtotal,
       'createdAt': createdAt.toIso8601String(),
     };

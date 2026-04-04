@@ -53,6 +53,8 @@ dependencies:
   path_provider: ^2.1.5
   form_builder_validators: ^11.2.0
   pos_connect_aidl: ^1.0.5
+  senraise_printer: ^0.0.6
+  # pos_universal_printer: ^0.2.10
 
 dev_dependencies:
   flutter_test:

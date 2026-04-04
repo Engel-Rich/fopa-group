@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:fopa_sop_apk/cores/app_theme.dart';
 import 'package:fopa_sop_apk/cores/size_config.dart';
 
-// const String baseUrl = "http://localhost:8085"; //"https://10.0.2.2:8085";
-const String baseUrl = "http://192.168.43.184:8085"; //"https://10.0.2.2:8085";
+const String baseUrl = "http://10.207.240.104:8085"; //"https://10.0.2.2:8085";
+// const String baseUrl = "http://192.168.1.69:8085"; //"https://10.0.2.2:8085";
+// final _senraisePrinterPlugin = SenraisePrinter();
 
 String errorUnknown = "Une erreur inconnue est survenue";
 
@@ -21,7 +22,7 @@ final settingsIconsSvg =
 const String gallerieIconSvg =
     '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.1"><path d="M15 8h.01M3 6a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3z"/><path d="m3 16l5-5c.928-.893 2.072-.893 3 0l5 5"/><path d="m14 14l1-1c.928-.893 2.072-.893 3 0l3 3"/></g></svg>';
 const String cameraIconSvg =
-    '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24"><path fill="currentColor" d="M12 17.5q1.875 0 3.188-1.312T16.5 13t-1.312-3.187T12 8.5T8.813 9.813T7.5 13t1.313 3.188T12 17.5m0-2q-1.05 0-1.775-.725T9.5 13t.725-1.775T12 10.5t1.775.725T14.5 13t-.725 1.775T12 15.5M4 21q-.825 0-1.412-.587T2 19V7q0-.825.588-1.412T4 5h3.15L8.4 3.65q.275-.3.663-.475T9.875 3h4.25q.425 0 .813.175t.662.475L16.85 5H20q.825 0 1.413.588T22 7v12q0 .825-.587 1.413T20 21zm0-2h16V7h-4.05l-1.825-2h-4.25L8.05 7H4zm8-6" stroke-width="0.1" stroke="currentColor"/></svg>';
+    '<svg xmlns="http://www.w3.org/2000/svg" wi‰dth="100" height="100" viewBox="0 0 24 24"><path fill="currentColor" d="M12 17.5q1.875 0 3.188-1.312T16.5 13t-1.312-3.187T12 8.5T8.813 9.813T7.5 13t1.313 3.188T12 17.5m0-2q-1.05 0-1.775-.725T9.5 13t.725-1.775T12 10.5t1.775.725T14.5 13t-.725 1.775T12 15.5M4 21q-.825 0-1.412-.587T2 19V7q0-.825.588-1.412T4 5h3.15L8.4 3.65q.275-.3.663-.475T9.875 3h4.25q.425 0 .813.175t.662.475L16.85 5H20q.825 0 1.413.588T22 7v12q0 .825-.587 1.413T20 21zm0-2h16V7h-4.05l-1.825-2h-4.25L8.05 7H4zm8-6" stroke-width="0.1" stroke="currentColor"/></svg>';
 const String arrowForwardIconSvg =
     '<svg xmlns="http://www.w3.org/2000/svg" width="50" height="100" viewBox="0 0 12 24"><path fill="currentColor" fill-rule="evenodd" d="M10.157 12.711L4.5 18.368l-1.414-1.414l4.95-4.95l-4.95-4.95L4.5 5.64l5.657 5.657a1 1 0 0 1 0 1.414" stroke-width="0.1" stroke="currentColor"/></svg>';
 const String signOutIconSvg =

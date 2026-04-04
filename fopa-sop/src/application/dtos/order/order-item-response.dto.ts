@@ -11,7 +11,7 @@ export class OrderItemResponseDto {
   productId: string;
 
   @ApiProperty()
-  productName: string;
+  name: string;
 
   @ApiProperty()
   quantity: number;
@@ -24,4 +24,5 @@ export class OrderItemResponseDto {
 
   @ApiProperty()
   createdAt: Date;
+
 }

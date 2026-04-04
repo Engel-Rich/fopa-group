@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fopa_sop_apk/cores/size_config.dart';
+import 'package:fopa_sop_apk/cores/utils.dart';
 import 'package:fopa_sop_apk/cores/widget/app_buttons.dart';
 import 'package:fopa_sop_apk/cores/widget/simple_text.dart';
 import 'package:fopa_sop_apk/cores/widget/textfield_app.dart';
@@ -54,7 +55,11 @@ class _CreateProductScreenState extends State<CreateProductScreen> {
 
   @override
   void dispose() {
-    context.read<ProductProvider>().changeSelectedCategory(null);
+    try {
+      context.read<ProductProvider>().changeSelectedCategory(null);
+    } catch (e) {
+      Utils.printLog(e);
+    }
     nameController.dispose();
     priceController.dispose();
     quantityController.dispose();
@@ -178,7 +183,7 @@ class _CreateProductScreenState extends State<CreateProductScreen> {
                     ),
                     spacerHeight(30),
                     CustomAppPrimaryButton(
-                      title: "Créer le produit",
+                      title: "Enregistrer le produit",
                       onPressed: () async {
                         if (formKey.currentState!.validate()) {
                           if (productProvider.selectedCategory == null) {

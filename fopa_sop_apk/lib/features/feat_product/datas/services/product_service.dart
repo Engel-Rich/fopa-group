@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:fopa_sop_apk/features/feat_product/datas/dtos/create_product_dto.dart';
 import 'package:fopa_sop_apk/features/feat_product/datas/dtos/update_product_dto.dart';
 import 'package:fopa_sop_apk/features/feat_product/datas/models/product_response_model.dart';
+import 'package:fopa_sop_apk/features/feat_product/datas/models/product_with_config_model.dart';
 
 class ProductService {
   final Dio dio;
@@ -19,12 +20,31 @@ class ProductService {
 
   Future<List<ProductResponseModel>> listProducts({bool? activeOnly}) async {
     try {
-      final queryParams = activeOnly != null
-          ? {'activeOnly': activeOnly.toString()}
-          : null;
-      final response = await dio.get('/products', queryParameters: queryParams);
+      // final queryParams = activeOnly != null
+      //     ? {'activeOnly': activeOnly.toString()}
+      //     : null;
+      final response = await dio.get('/products', queryParameters: {});
       final List<dynamic> data = response.data;
       return data.map((json) => ProductResponseModel.fromJson(json)).toList();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<ProductWithConfigModel>> listProductsWithConfig(
+    String customerId, {
+    bool? activeOnly,
+  }) async {
+    try {
+      // final queryParams = activeOnly != null
+      //     ? {'activeOnly': activeOnly.toString()}
+      //     : null;
+      final response = await dio.get(
+        '/products/customer/$customerId',
+        queryParameters: {},
+      );
+      final List<dynamic> data = response.data;
+      return data.map((json) => ProductWithConfigModel.fromJson(json)).toList();
     } catch (e) {
       rethrow;
     }

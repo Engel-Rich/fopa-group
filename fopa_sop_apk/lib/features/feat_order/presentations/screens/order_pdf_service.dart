@@ -77,7 +77,7 @@ class OrderPdfService {
                     children: [
                       pw.Expanded(
                         child: pw.Text(
-                          item.productName,
+                          item.name,
                           style: pw.TextStyle(fontSize: 15),
                         ),
                       ),

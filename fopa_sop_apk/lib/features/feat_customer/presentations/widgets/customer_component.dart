@@ -26,14 +26,14 @@ class CustomerComponent extends StatelessWidget {
             text:
                 "${customerResponseModel.user?.phone} - ${customerResponseModel.address ?? customerResponseModel.user?.email}",
             size: 18,
-            weight: FontWeight.w500,
+            weight: FontWeight.w600,
           ),
           SimpleText(
             text: "Dette: ${customerResponseModel.currentDebt.toInt()} FCFA",
           ),
           SimpleText(
             text:
-                "Dette emballages: ${customerResponseModel.currentPackagesDebt.toInt()}",
+                "Emballages: ${customerResponseModel.currentPackagesDebt.toInt()}",
             size: 17,
             weight: FontWeight.w500,
           ),

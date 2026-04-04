@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:fopa_sop_apk/features/feat_user/domaines/usecases/sing_out_usecase.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fopa_sop_apk/cores/services/api_services.dart';
@@ -39,6 +40,7 @@ import 'package:fopa_sop_apk/features/feat_product/datas/repositories_implement/
 import 'package:fopa_sop_apk/features/feat_product/domaines/repositories/product_repository.dart';
 import 'package:fopa_sop_apk/features/feat_product/domaines/usecases/create_product_usecase.dart';
 import 'package:fopa_sop_apk/features/feat_product/domaines/usecases/list_products_usecase.dart';
+import 'package:fopa_sop_apk/features/feat_product/domaines/usecases/list_products_with_config_usecase.dart';
 import 'package:fopa_sop_apk/features/feat_product/domaines/usecases/update_product_usecase.dart';
 import 'package:fopa_sop_apk/features/feat_product/presentations/controllers/product_provider.dart';
 
@@ -140,12 +142,17 @@ void initInjectorApp({required SharedPreferences preferences}) {
   getItInstance.registerLazySingleton<DeleteUserUseCase>(
     () => DeleteUserUseCase(getItInstance<UserRepository>()),
   );
+
+  // getItInstance.registerLazySingleton<SingOutUsecase>(
+  //   () => SingOutUsecase(getItInstance<UserRepository>()),
+  // );
   getItInstance.registerLazySingleton<UserProvider>(
     () => UserProvider(
       createUserUseCase: getItInstance<CreateUserUseCase>(),
       listUsersUseCase: getItInstance<ListUsersUseCase>(),
       updateUserUseCase: getItInstance<UpdateUserUseCase>(),
       deleteUserUseCase: getItInstance<DeleteUserUseCase>(),
+      // singOutUsecase: getItInstance<SingOutUsecase>(),
     ),
   );
 
@@ -187,6 +194,9 @@ void initInjectorApp({required SharedPreferences preferences}) {
   getItInstance.registerLazySingleton<ListProductsUseCase>(
     () => ListProductsUseCase(getItInstance<ProductRepository>()),
   );
+  getItInstance.registerLazySingleton<ListProductsWithConfigUseCase>(
+    () => ListProductsWithConfigUseCase(getItInstance<ProductRepository>()),
+  );
   getItInstance.registerLazySingleton<UpdateProductUseCase>(
     () => UpdateProductUseCase(getItInstance<ProductRepository>()),
   );
@@ -194,6 +204,8 @@ void initInjectorApp({required SharedPreferences preferences}) {
     () => ProductProvider(
       createProductUseCase: getItInstance<CreateProductUseCase>(),
       listProductsUseCase: getItInstance<ListProductsUseCase>(),
+      listProductsWithConfigUseCase:
+          getItInstance<ListProductsWithConfigUseCase>(),
       updateProductUseCase: getItInstance<UpdateProductUseCase>(),
       localStorageService: getItInstance<LocalStorageService>(),
     ),

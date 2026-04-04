@@ -43,4 +43,13 @@ class UserService {
       rethrow;
     }
   }
+
+  // Future<int> signOut() async {
+  //   try {
+  //     final response = await dio.delete('/auth/logout');
+  //     return response.statusCode ?? 200;
+  //   } catch (e) {
+  //     rethrow;
+  //   }
+  // }
 }

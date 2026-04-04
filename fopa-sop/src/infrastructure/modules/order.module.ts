@@ -17,6 +17,8 @@ import { CustomerEntity } from '../database/entities/customer.entity';
 import { ProductEntity } from '../database/entities/product.entity';
 import { StockMovementEntity } from '../database/entities/stock-movement.entity';
 import { PaymentEntity } from '../database/entities/payment.entity';
+import { CustomerProductPriceEntity } from '../database/entities/customer-product-price.entity';
+import { CustomerProductPriceRepository } from '../repositories/customer-product-price.repository';
 
 @Module({
   imports: [
@@ -25,6 +27,7 @@ import { PaymentEntity } from '../database/entities/payment.entity';
       OrderItemEntity,
       CustomerEntity,
       ProductEntity,
+      CustomerProductPriceEntity,
       StockMovementEntity,
       PaymentEntity,
     ]),
@@ -50,6 +53,10 @@ import { PaymentEntity } from '../database/entities/payment.entity';
     {
       provide: 'IProductRepository',
       useClass: ProductRepository,
+    },
+    {
+      provide: 'ICustomerProductPriceRepository',
+      useClass: CustomerProductPriceRepository,
     },
     {
       provide: 'IStockMovementRepository',

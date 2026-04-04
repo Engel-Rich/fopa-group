@@ -5,7 +5,7 @@ export class ProductMarginDto {
   productId: string;
 
   @ApiProperty()
-  productName: string;
+  name: string;
 
   @ApiProperty()
   totalSold: number;

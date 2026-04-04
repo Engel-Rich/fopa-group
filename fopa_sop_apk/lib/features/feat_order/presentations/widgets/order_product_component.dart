@@ -2,21 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fopa_sop_apk/cores/app_theme.dart';
 import 'package:fopa_sop_apk/cores/size_config.dart';
+import 'package:fopa_sop_apk/cores/widget/extensions.dart';
 import 'package:fopa_sop_apk/cores/widget/simple_text.dart';
 import 'package:fopa_sop_apk/cores/widget/textfield_app.dart';
-import 'package:fopa_sop_apk/features/feat_product/datas/models/product_response_model.dart';
+import 'package:fopa_sop_apk/features/feat_product/datas/models/product_with_config_model.dart';
 
 class OrderProductComponent extends StatefulWidget {
-  final ProductResponseModel product;
+  final ProductWithConfigModel product;
   final int quantity;
+  final double unitPrice;
   final ValueChanged<int> onQuantityChanged;
+  final ValueChanged<double> onUnitPriceChanged;
   final VoidCallback onRemove;
 
   const OrderProductComponent({
     super.key,
     required this.product,
     required this.quantity,
+    required this.unitPrice,
     required this.onQuantityChanged,
+    required this.onUnitPriceChanged,
     required this.onRemove,
   });
 
@@ -26,12 +31,16 @@ class OrderProductComponent extends StatefulWidget {
 
 class _OrderProductComponentState extends State<OrderProductComponent> {
   late TextEditingController _quantityController;
+  late TextEditingController _unitPriceController;
 
   @override
   void initState() {
     super.initState();
     _quantityController = TextEditingController(
       text: widget.quantity.toString(),
+    );
+    _unitPriceController = TextEditingController(
+      text: widget.unitPrice.toStringAsFixed(0),
     );
   }
 
@@ -41,11 +50,15 @@ class _OrderProductComponentState extends State<OrderProductComponent> {
     if (oldWidget.quantity != widget.quantity) {
       _quantityController.text = widget.quantity.toString();
     }
+    if (oldWidget.unitPrice != widget.unitPrice) {
+      _unitPriceController.text = widget.unitPrice.toStringAsFixed(0);
+    }
   }
 
   @override
   void dispose() {
     _quantityController.dispose();
+    _unitPriceController.dispose();
     super.dispose();
   }
 
@@ -54,27 +67,73 @@ class _OrderProductComponentState extends State<OrderProductComponent> {
     return Row(
       children: [
         Expanded(
-          flex: 3,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          flex: 4,
+          child: Row(
             children: [
-              SimpleText(
-                text: widget.product.name,
-                size: 16,
-                weight: FontWeight.bold,
-                color: context.titleLargeColor,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SimpleText(
+                    text: widget.product.name,
+                    size: 16,
+                    weight: FontWeight.bold,
+                    color: context.titleLargeColor,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.start,
+                  ),
+                  spacerHeight(4),
+                  SimpleText(
+                    text: "FCFA",
+                    // text:
+                    //     "Prix de base: ${widget.product.defaultUnitPrice.toInt()} FCFA",
+                    size: 15,
+                    color: context.titleLargeColor,
+                    weight: FontWeight.w500,
+                  ),
+                ],
               ),
-              spacerHeight(4),
-              SimpleText(
-                text: "${widget.product.price.toInt()} FCFA",
-                size: 14,
-                color: context.titleLargeColor,
-              ),
+              spacerWidth(5),
+              Expanded(
+                child: TextFieldApp(
+                  filled: true,
+                  fillColor: context.tertiary,
+                  controller: _unitPriceController,
+                  keyboardType: TextInputType.number,
+                  hintText: "Prix unitaire",
+                  style: appTextStyle.copyWith(fontSize: 17),
+                  inputFormaters: [FilteringTextInputFormatter.digitsOnly],
+                  decoration: inputDecorationApp(context: context).copyWith(
+                    filled: true,
+                    fillColor: context.tertiary.withAppOppacity(0.5),
+                    contentPadding: EdgeInsets.only(
+                      bottom: 0,
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                    ),
+                    border: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                  ),
+                  onchange: (value) {
+                    final price = double.tryParse(value);
+                    if (price != null && price > 0) {
+                      widget.onUnitPriceChanged(price);
+                    }
+                  },
+                  containsPadding: EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 8,
+                  ),
+                ),
+              ),              
+              spacerWidth(5),
             ],
           ),
         ),
         Expanded(
-          flex: 2,
+          flex: 3,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -104,7 +163,8 @@ class _OrderProductComponentState extends State<OrderProductComponent> {
                   radius: 8,
                   decoration: inputDecorationApp(context: context).copyWith(
                     contentPadding: EdgeInsets.only(bottom: 5),
-                    filled: false,
+                    filled: true,
+                    fillColor: context.tertiary.withAppOppacity(0.5),
                     border: InputBorder.none,
                     enabledBorder: InputBorder.none,
                     focusedBorder: InputBorder.none,

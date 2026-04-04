@@ -11,7 +11,7 @@ Color redColors = AppThemes.redColors;
 Color transactionImageColor = HexColor("FCE196");
 Color textColor = HexColor('656565');
 
-final TextStyle appTextStyle = TextStyle(fontFamily: "Roboto", fontSize: 15);
+final TextStyle appTextStyle = TextStyle(fontFamily: "Roboto", fontSize: 16);
 const double bodyHorizontalPading = 15.0;
 
 class AppThemes {

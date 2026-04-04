@@ -7,7 +7,7 @@ export class OrderItem {
   order?: Order;
   productId: string;
   product?: Product;
-  productName: string;
+  name: string;
   quantity: number;
   unitPrice: number;
   subtotal: number;
@@ -16,13 +16,13 @@ export class OrderItem {
   constructor(
     orderId: string,
     productId: string,
-    productName: string,
+    name: string,
     quantity: number,
-    unitPrice: number,
+    unitPrice: number,    
   ) {
     this.orderId = orderId;
     this.productId = productId;
-    this.productName = productName;
+    this.name = name;
     this.quantity = quantity;
     this.unitPrice = unitPrice;
     this.subtotal = quantity * unitPrice;

@@ -7,13 +7,14 @@ import 'package:fopa_sop_apk/cores/widget/extensions.dart';
 import 'package:fopa_sop_apk/cores/widget/simple_text.dart';
 import 'package:fopa_sop_apk/cores/widget/textfield_app.dart';
 // import 'package:fopa_sop_apk/features/feat_order/datas/models/fake_order.dart';
-import 'package:fopa_sop_apk/features/feat_product/datas/models/product_response_model.dart';
+import 'package:fopa_sop_apk/features/feat_product/datas/models/product_with_config_model.dart';
 // import 'package:fopa_sop_apk/features/feat_product/domaines/controllers/product_provider.dart';
 // import 'package:provider/provider.dart';
 
 class AddProductDialog extends StatefulWidget {
-  final Function(ProductResponseModel product, int quantity) onProductSelected;
-  final List<ProductResponseModel> products;
+  final Function(ProductWithConfigModel product, int quantity)
+  onProductSelected;
+  final List<ProductWithConfigModel> products;
 
   const AddProductDialog({
     super.key,
@@ -26,7 +27,7 @@ class AddProductDialog extends StatefulWidget {
 }
 
 class _AddProductDialogState extends State<AddProductDialog> {
-  ProductResponseModel? _selectedProduct;
+  ProductWithConfigModel? _selectedProduct;
   final _quantityController = TextEditingController(text: '1');
   int _quantity = 1;
 
@@ -134,9 +135,9 @@ class _AddProductDialogState extends State<AddProductDialog> {
 }
 
 class _ProductSearchDropdown extends StatefulWidget {
-  final ProductResponseModel? selectedProduct;
-  final ValueChanged<ProductResponseModel?> onChanged;
-  final List<ProductResponseModel> products;
+  final ProductWithConfigModel? selectedProduct;
+  final ValueChanged<ProductWithConfigModel?> onChanged;
+  final List<ProductWithConfigModel> products;
   const _ProductSearchDropdown({
     required this.selectedProduct,
     required this.onChanged,
@@ -150,7 +151,7 @@ class _ProductSearchDropdown extends StatefulWidget {
 class _ProductSearchDropdownState extends State<_ProductSearchDropdown> {
   final _searchController = TextEditingController();
   bool _isOpen = false;
-  List<ProductResponseModel> _filteredProducts = [];
+  List<ProductWithConfigModel> _filteredProducts = [];
 
   @override
   void initState() {
@@ -201,7 +202,7 @@ class _ProductSearchDropdownState extends State<_ProductSearchDropdown> {
                 Expanded(
                   child: SimpleText(
                     text: widget.selectedProduct != null
-                        ? "${widget.selectedProduct!.name} - ${widget.selectedProduct!.price.toInt()} FCFA"
+                        ? "${widget.selectedProduct!.name} - ${widget.selectedProduct!.defaultUnitPrice.toInt()} FCFA"
                         : "Sélectionnez un produit",
                     color: widget.selectedProduct != null
                         ? context.titleLargeColor
@@ -252,6 +253,7 @@ class _ProductSearchDropdownState extends State<_ProductSearchDropdown> {
                     itemCount: _filteredProducts.length,
                     itemBuilder: (context, index) {
                       final product = _filteredProducts[index];
+                      final priceToShow = product.defaultUnitPrice;
                       return ListTile(
                         title: SimpleText(
                           text: product.name,
@@ -259,7 +261,7 @@ class _ProductSearchDropdownState extends State<_ProductSearchDropdown> {
                           color: context.titleLargeColor,
                         ),
                         subtitle: SimpleText(
-                          text: "${product.price.toInt()} FCFA",
+                          text: "${priceToShow.toInt()} FCFA",
                           size: 16,
                           color: context.titleLargeColor.withAppOppacity(0.7),
                         ),

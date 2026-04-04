@@ -29,7 +29,7 @@ export class OrderItemEntity {
   product: ProductEntity;
 
   @Column()
-  productName: string;
+  name: string;
 
   @Column('int')
   quantity: number;

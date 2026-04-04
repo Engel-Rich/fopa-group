@@ -85,7 +85,7 @@ class _CreateCategorieScreenState extends State<CreateCategorieScreen> {
                     ),
                     spacerHeight(60),
                     CustomAppPrimaryButton(
-                      title: "Créer la catégorie",
+                      title: "Enregistrer la catégorie",
                       onPressed: () async {
                         if (formKey.currentState!.validate()) {
                           if (widget.category != null) {

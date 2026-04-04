@@ -29,6 +29,9 @@ class TextFieldApp extends StatelessWidget {
   final String? label;
   final TextStyle? style;
   // final double? height;
+  final bool? filled;
+  final Color? fillColor;
+
   final EdgeInsets? containsPadding;
   const TextFieldApp({
     super.key,
@@ -56,6 +59,8 @@ class TextFieldApp extends StatelessWidget {
     this.maxLines,
     this.label,
     this.style,
+    this.filled = true,
+    this.fillColor,
   });
 
   @override
@@ -84,8 +89,8 @@ class TextFieldApp extends StatelessWidget {
             hintText: hintText,
             prefixIcon: prefixIcon,
             labelText: label,
-            filled: true,
-            fillColor: context.tertiary,
+            filled: filled ?? true,
+            fillColor: fillColor ?? context.tertiary,
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(radius ?? 30),
               borderSide: BorderSide.none,

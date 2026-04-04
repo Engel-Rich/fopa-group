@@ -7,4 +7,5 @@ abstract class UserRepository {
   Future<List<UserResponseModel>> listUsers();
   Future<UserResponseModel> updateUser(String id, UpdateUserDto dto);
   Future<void> deleteUser(String id);
+  // Future<int> singOut();
 }

@@ -74,6 +74,7 @@ class MyApp extends StatelessWidget {
         child: MaterialApp.router(
           title: 'Fopa Sop',
           theme: AppThemes.lightTheme,
+          themeMode: ThemeMode.light,
           darkTheme: AppThemes.darkTheme,
           routerConfig: AppRoutes.router,
           debugShowCheckedModeBanner: false,

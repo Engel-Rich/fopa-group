@@ -15,6 +15,8 @@ import { ListProductsUseCase } from '../../application/usecases/product/list-pro
 import { CreateProductDto } from '../../application/dtos/product/create-product.dto';
 import { UpdateProductDto } from '../../application/dtos/product/update-product.dto';
 import { ProductResponseDto } from '../../application/dtos/product/product-response.dto';
+import { ProductWithConfigDto } from '../../application/dtos/product/product-with-config.dto';
+import { ListProductsWithConfigUseCase } from '../../application/usecases/product/list-products-with-config.usecase';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { RolesGuard } from '../guards/roles.guard';
 import { Roles } from '../decorators/roles.decorator';
@@ -30,6 +32,7 @@ export class ProductController {
     private readonly createProductUseCase: CreateProductUseCase,
     private readonly updateProductUseCase: UpdateProductUseCase,
     private readonly listProductsUseCase: ListProductsUseCase,
+    private readonly listProductsWithConfigUseCase: ListProductsWithConfigUseCase,
   ) {}
 
   @Post()
@@ -62,5 +65,18 @@ export class ProductController {
     @Body() dto: UpdateProductDto,
   ): Promise<ProductResponseDto> {
     return this.updateProductUseCase.execute(id, dto);
+  }
+
+  @Get('customer/:customerId')
+  @Roles(UserRole.ADMIN, UserRole.CAISSIERE)
+  @ApiOperation({ summary: 'Liste des produits avec prix configuré pour un client' })
+  @ApiQuery({ name: 'activeOnly', required: false, type: Boolean })
+  @ApiResponse({ status: 200, description: 'Liste des produits avec configuration client', type: [ProductWithConfigDto] })
+  async findAllForCustomer(
+    @Param('customerId') customerId: string,
+    @Query('activeOnly') activeOnly?: string,
+  ): Promise<ProductWithConfigDto[]> {
+    const active = activeOnly === 'true';
+    return this.listProductsWithConfigUseCase.execute(customerId, active);
   }
 }

@@ -41,6 +41,9 @@ class LocalStorageService {
   void logoutUser() {
     preferences.remove(userStorageKey);
     preferences.remove(userTokenStorageKey);
+    preferences.remove(productsStorageKey);
+    preferences.remove(customersStorageKey);
+    preferences.remove(categoriesStorageKey);
   }
 
   Future<bool> storeFirstOpenTime(bool status) async {
@@ -100,7 +103,9 @@ class LocalStorageService {
     if (productsJson == null) return null;
     final List<dynamic> jsonList = jsonDecode(productsJson);
     return jsonList
-        .map((json) => ProductResponseModel.fromJson(json as Map<String, dynamic>))
+        .map(
+          (json) => ProductResponseModel.fromJson(json as Map<String, dynamic>),
+        )
         .toList();
   }
 
@@ -117,7 +122,10 @@ class LocalStorageService {
     if (customersJson == null) return null;
     final List<dynamic> jsonList = jsonDecode(customersJson);
     return jsonList
-        .map((json) => CustomerResponseModel.fromJson(json as Map<String, dynamic>))
+        .map(
+          (json) =>
+              CustomerResponseModel.fromJson(json as Map<String, dynamic>),
+        )
         .toList();
   }
 
@@ -134,7 +142,10 @@ class LocalStorageService {
     if (categoriesJson == null) return null;
     final List<dynamic> jsonList = jsonDecode(categoriesJson);
     return jsonList
-        .map((json) => CategoryResponseModel.fromJson(json as Map<String, dynamic>))
+        .map(
+          (json) =>
+              CategoryResponseModel.fromJson(json as Map<String, dynamic>),
+        )
         .toList();
   }
 }

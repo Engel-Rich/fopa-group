@@ -7,11 +7,14 @@ import 'package:fopa_sop_apk/features/feat_product/datas/dtos/update_product_dto
 import 'package:fopa_sop_apk/features/feat_product/datas/models/product_response_model.dart';
 import 'package:fopa_sop_apk/features/feat_product/domaines/usecases/create_product_usecase.dart';
 import 'package:fopa_sop_apk/features/feat_product/domaines/usecases/list_products_usecase.dart';
+import 'package:fopa_sop_apk/features/feat_product/domaines/usecases/list_products_with_config_usecase.dart';
 import 'package:fopa_sop_apk/features/feat_product/domaines/usecases/update_product_usecase.dart';
+import 'package:fopa_sop_apk/features/feat_product/datas/models/product_with_config_model.dart';
 
 class ProductProvider extends ChangeNotifier {
   final CreateProductUseCase createProductUseCase;
   final ListProductsUseCase listProductsUseCase;
+  final ListProductsWithConfigUseCase listProductsWithConfigUseCase;
   final UpdateProductUseCase updateProductUseCase;
   final LocalStorageService localStorageService;
 
@@ -19,11 +22,13 @@ class ProductProvider extends ChangeNotifier {
   CategoryResponseModel? selectedCategory;
   AppState<ProductResponseModel> createProductState = AppState();
   AppState<List<ProductResponseModel>> listProductsState = AppState();
+  AppState<List<ProductWithConfigModel>> listProductsWithConfigState = AppState();
   AppState<ProductResponseModel> updateProductState = AppState();
 
   ProductProvider({
     required this.createProductUseCase,
     required this.listProductsUseCase,
+    required this.listProductsWithConfigUseCase,
     required this.updateProductUseCase,
     required this.localStorageService,
   });
@@ -39,6 +44,7 @@ class ProductProvider extends ChangeNotifier {
 
     createProductState = await createProductUseCase.call(dto);
     notifyListeners();
+    listProducts();
   }
 
   Future<void> listProducts({bool? activeOnly}) async {
@@ -58,6 +64,18 @@ class ProductProvider extends ChangeNotifier {
     notifyListeners();
 
     updateProductState = await updateProductUseCase.call(id, dto);
+    notifyListeners();
+    listProducts();
+  }
+
+  Future<void> listProductsWithConfig(String customerId, {bool? activeOnly}) async {
+    listProductsWithConfigState = AppState.loading();
+    notifyListeners();
+
+    listProductsWithConfigState = await listProductsWithConfigUseCase.call(
+      customerId,
+      activeOnly: activeOnly,
+    );
     notifyListeners();
   }
 
