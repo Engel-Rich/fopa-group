@@ -1,11 +1,11 @@
 export interface ICustomerProductPriceRepository {
     findByCustomerId(customerId: string): Promise<Array<{
         productId: string;
-        unitPrice: number;
+        price: number;
     }>>;
     findOne(customerId: string, productId: string): Promise<{
         productId: string;
-        unitPrice: number;
+        price: number;
     } | null>;
-    upsert(customerId: string, productId: string, unitPrice: number): Promise<void>;
+    upsert(customerId: string, productId: string, price: number): Promise<void>;
 }

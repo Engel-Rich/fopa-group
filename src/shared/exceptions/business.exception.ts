@@ -19,9 +19,9 @@ export class AlreadyExistsException extends BusinessException {
 }
 
 export class InsufficientStockException extends BusinessException {
-  constructor(productName: string, available: number, requested: number) {
+  constructor(name: string, available: number, requested: number) {
     super(
-      `Stock insuffisant pour ${productName}. Disponible: ${available}, Demandé: ${requested}`,
+      `Stock insuffisant pour ${name}. Disponible: ${available}, Demandé: ${requested}`,
       HttpStatus.BAD_REQUEST,
     );
   }

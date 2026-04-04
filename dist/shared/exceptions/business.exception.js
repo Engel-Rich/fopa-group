@@ -21,8 +21,8 @@ class AlreadyExistsException extends BusinessException {
 }
 exports.AlreadyExistsException = AlreadyExistsException;
 class InsufficientStockException extends BusinessException {
-    constructor(productName, available, requested) {
-        super(`Stock insuffisant pour ${productName}. Disponible: ${available}, Demandé: ${requested}`, common_1.HttpStatus.BAD_REQUEST);
+    constructor(name, available, requested) {
+        super(`Stock insuffisant pour ${name}. Disponible: ${available}, Demandé: ${requested}`, common_1.HttpStatus.BAD_REQUEST);
     }
 }
 exports.InsufficientStockException = InsufficientStockException;

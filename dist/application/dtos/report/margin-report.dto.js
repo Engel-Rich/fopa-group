@@ -13,7 +13,7 @@ exports.MarginReportDto = exports.ProductMarginDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 class ProductMarginDto {
     productId;
-    productName;
+    name;
     totalSold;
     averageCost;
     averageSalePrice;
@@ -30,7 +30,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)(),
     __metadata("design:type", String)
-], ProductMarginDto.prototype, "productName", void 0);
+], ProductMarginDto.prototype, "name", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)(),
     __metadata("design:type", Number)

@@ -15,7 +15,7 @@ class OrderItemResponseDto {
     id;
     orderId;
     productId;
-    productName;
+    name;
     quantity;
     unitPrice;
     subtotal;
@@ -37,7 +37,7 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)(),
     __metadata("design:type", String)
-], OrderItemResponseDto.prototype, "productName", void 0);
+], OrderItemResponseDto.prototype, "name", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)(),
     __metadata("design:type", Number)

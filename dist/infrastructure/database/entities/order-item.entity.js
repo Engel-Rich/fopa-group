@@ -19,7 +19,7 @@ let OrderItemEntity = class OrderItemEntity {
     order;
     productId;
     product;
-    productName;
+    name;
     quantity;
     unitPrice;
     subtotal;
@@ -51,7 +51,7 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], OrderItemEntity.prototype, "productName", void 0);
+], OrderItemEntity.prototype, "name", void 0);
 __decorate([
     (0, typeorm_1.Column)('int'),
     __metadata("design:type", Number)

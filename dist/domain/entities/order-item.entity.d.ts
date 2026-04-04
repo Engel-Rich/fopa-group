@@ -6,10 +6,10 @@ export declare class OrderItem {
     order?: Order;
     productId: string;
     product?: Product;
-    productName: string;
+    name: string;
     quantity: number;
     unitPrice: number;
     subtotal: number;
     createdAt: Date;
-    constructor(orderId: string, productId: string, productName: string, quantity: number, unitPrice: number);
+    constructor(orderId: string, productId: string, name: string, quantity: number, unitPrice: number);
 }

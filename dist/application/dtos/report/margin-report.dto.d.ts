@@ -1,6 +1,6 @@
 export declare class ProductMarginDto {
     productId: string;
-    productName: string;
+    name: string;
     totalSold: number;
     averageCost: number;
     averageSalePrice: number;

@@ -6,7 +6,7 @@ const order_item_entity_2 = require("../../database/entities/order-item.entity")
 const product_mapper_1 = require("./product.mapper");
 class OrderItemMapper {
     static toDomain(entity) {
-        const item = new order_item_entity_1.OrderItem(entity.orderId, entity.productId, entity.productName, entity.quantity, parseFloat(entity.unitPrice.toString()));
+        const item = new order_item_entity_1.OrderItem(entity.orderId, entity.productId, entity.name, entity.quantity, parseFloat(entity.unitPrice.toString()));
         item.id = entity.id;
         item.createdAt = entity.createdAt;
         if (entity.product) {
@@ -20,7 +20,7 @@ class OrderItemMapper {
             entity.id = domain.id;
         entity.orderId = domain.orderId;
         entity.productId = domain.productId;
-        entity.productName = domain.productName;
+        entity.name = domain.name;
         entity.quantity = domain.quantity;
         entity.unitPrice = domain.unitPrice;
         entity.subtotal = domain.subtotal;

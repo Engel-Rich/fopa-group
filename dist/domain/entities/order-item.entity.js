@@ -7,15 +7,15 @@ class OrderItem {
     order;
     productId;
     product;
-    productName;
+    name;
     quantity;
     unitPrice;
     subtotal;
     createdAt;
-    constructor(orderId, productId, productName, quantity, unitPrice) {
+    constructor(orderId, productId, name, quantity, unitPrice) {
         this.orderId = orderId;
         this.productId = productId;
-        this.productName = productName;
+        this.name = name;
         this.quantity = quantity;
         this.unitPrice = unitPrice;
         this.subtotal = quantity * unitPrice;

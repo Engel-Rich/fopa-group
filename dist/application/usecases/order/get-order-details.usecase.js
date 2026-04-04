@@ -78,7 +78,7 @@ let GetOrderDetailsUseCase = class GetOrderDetailsUseCase {
                     id: item.id,
                     orderId: item.orderId,
                     productId: item.productId,
-                    productName: item.productName,
+                    name: item.name,
                     quantity: item.quantity,
                     unitPrice: item.unitPrice,
                     subtotal: item.subtotal,

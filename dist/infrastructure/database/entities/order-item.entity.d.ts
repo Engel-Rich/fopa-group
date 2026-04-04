@@ -6,7 +6,7 @@ export declare class OrderItemEntity {
     order: OrderEntity;
     productId: string;
     product: ProductEntity;
-    productName: string;
+    name: string;
     quantity: number;
     unitPrice: number;
     subtotal: number;

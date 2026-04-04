@@ -6,7 +6,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Installer toutes les dépendances (dev + prod) pour compiler TS
-RUN npm install
+RUN npm install --legacy-peer-deps
 
 RUN npm install -g @nestjs/cli && npm install --only=production
 

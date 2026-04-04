@@ -11,11 +11,11 @@ export declare class StockMovement {
     product?: Product;
     type: StockMovementType;
     quantity: number;
-    unitPrice: number;
+    price: number;
     totalAmount: number;
     reason?: string;
     userId: string;
     user?: User;
     createdAt: Date;
-    constructor(productId: string, type: StockMovementType, quantity: number, unitPrice: number, reason?: string, userId?: string);
+    constructor(productId: string, type: StockMovementType, quantity: number, price: number, reason?: string, userId?: string);
 }

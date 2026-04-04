@@ -1,5 +1,5 @@
 export declare class CreateStockEntryDto {
     productId: string;
     quantity: number;
-    unitPrice: number;
+    price: number;
 }

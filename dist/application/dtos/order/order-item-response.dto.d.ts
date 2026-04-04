@@ -2,7 +2,7 @@ export declare class OrderItemResponseDto {
     id: string;
     orderId: string;
     productId: string;
-    productName: string;
+    name: string;
     quantity: number;
     unitPrice: number;
     subtotal: number;

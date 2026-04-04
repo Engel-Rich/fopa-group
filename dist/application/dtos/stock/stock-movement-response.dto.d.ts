@@ -4,7 +4,7 @@ export declare class StockMovementResponseDto {
     productId: string;
     type: StockMovementType;
     quantity: number;
-    unitPrice: number;
+    price: number;
     totalAmount: number;
     reason?: string;
     userId: string;

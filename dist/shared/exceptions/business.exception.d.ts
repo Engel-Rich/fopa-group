@@ -9,7 +9,7 @@ export declare class AlreadyExistsException extends BusinessException {
     constructor(resource: string);
 }
 export declare class InsufficientStockException extends BusinessException {
-    constructor(productName: string, available: number, requested: number);
+    constructor(name: string, available: number, requested: number);
 }
 export declare class InvalidCredentialsException extends BusinessException {
     constructor();
