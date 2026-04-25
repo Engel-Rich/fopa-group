@@ -18,7 +18,6 @@ class CreateOrderDto {
     customerId;
     items;
     amountPaid;
-    packages = 0;
 }
 exports.CreateOrderDto = CreateOrderDto;
 __decorate([
@@ -41,11 +40,4 @@ __decorate([
     (0, class_validator_1.IsNumber)({}, { message: 'Le montant payé doit être un nombre' }),
     __metadata("design:type", Number)
 ], CreateOrderDto.prototype, "amountPaid", void 0);
-__decorate([
-    (0, swagger_1.ApiPropertyOptional)({ example: 0, minimum: 0, description: 'Nombre d\'emballages' }),
-    (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsInt)({ message: 'Le nombre d\'emballages doit être un entier' }),
-    (0, class_validator_1.Min)(0, { message: 'Le nombre d\'emballages doit être supérieur ou égal à 0' }),
-    __metadata("design:type", Number)
-], CreateOrderDto.prototype, "packages", void 0);
 //# sourceMappingURL=create-order.dto.js.map

@@ -122,13 +122,9 @@ export class CreateOrderUseCase {
       throw new InvalidOrderException('Le montant total doit être supérieur à 0');
     }
 
-    // Vérifier que le montant payé ne dépasse pas le totalAmount + previousDebt
-    // (car le montant payé peut être utilisé pour payer les dettes ET la nouvelle commande)
-    // Note: previousDebt est la somme des remainingDebt de toutes les commandes impayées
-    const maxAllowedAmount = totalAmount + previousDebt;
-    if (dto.amountPaid > maxAllowedAmount) {
+    if (dto.amountPaid > totalAmount) {
       throw new InvalidOrderException(
-        `Le montant payé (${dto.amountPaid}) ne peut pas être supérieur à la somme de la dette (${previousDebt}) et du montant total de la commande (${totalAmount}) = ${maxAllowedAmount}`
+        `Le montant payé (${dto.amountPaid}) ne peut pas être supérieur au total de la commande incluant la dette (${totalAmount})`
       );
     }
 
@@ -210,19 +206,6 @@ export class CreateOrderUseCase {
         userId
       );
       const savedOrder = await this.orderRepository.create(order);
-
-      // Mettre à jour les emballages si fournis
-      const packagesCount = Math.max(0, Math.floor(Number(dto.packages) || 0));
-      if (packagesCount > 0) {
-        savedOrder.setPackages(packagesCount);
-        await this.orderRepository.update(savedOrder.id, {
-          packages: savedOrder.packages,
-          packagesReturned: savedOrder.packagesReturned,
-          remainingPackages: savedOrder.remainingPackages,
-        });
-        const newPackagesDebt = (customer.currentPackagesDebt ?? 0) + packagesCount;
-        await this.customerRepository.updatePackagesDebt(dto.customerId, newPackagesDebt);
-      }
 
       // Créer les order items
       for (const item of orderItems) {

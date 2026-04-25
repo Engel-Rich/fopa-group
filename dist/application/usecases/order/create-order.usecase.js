@@ -86,9 +86,8 @@ let CreateOrderUseCase = class CreateOrderUseCase {
         if (subtotal <= 0) {
             throw new business_exception_1.InvalidOrderException('Le montant total doit être supérieur à 0');
         }
-        const maxAllowedAmount = totalAmount + previousDebt;
-        if (dto.amountPaid > maxAllowedAmount) {
-            throw new business_exception_1.InvalidOrderException(`Le montant payé (${dto.amountPaid}) ne peut pas être supérieur à la somme de la dette (${previousDebt}) et du montant total de la commande (${totalAmount}) = ${maxAllowedAmount}`);
+        if (dto.amountPaid > totalAmount) {
+            throw new business_exception_1.InvalidOrderException(`Le montant payé (${dto.amountPaid}) ne peut pas être supérieur au total de la commande incluant la dette (${totalAmount})`);
         }
         const queryRunner = this.dataSource.createQueryRunner();
         await queryRunner.connect();
@@ -124,17 +123,6 @@ let CreateOrderUseCase = class CreateOrderUseCase {
             const orderNumber = order_number_generator_1.OrderNumberGenerator.generate();
             const order = new order_entity_1.Order(orderNumber, dto.customerId, previousDebt, subtotal, userId, amountGiven, amountPaidForThisOrder, userId);
             const savedOrder = await this.orderRepository.create(order);
-            const packagesCount = Math.max(0, Math.floor(Number(dto.packages) || 0));
-            if (packagesCount > 0) {
-                savedOrder.setPackages(packagesCount);
-                await this.orderRepository.update(savedOrder.id, {
-                    packages: savedOrder.packages,
-                    packagesReturned: savedOrder.packagesReturned,
-                    remainingPackages: savedOrder.remainingPackages,
-                });
-                const newPackagesDebt = (customer.currentPackagesDebt ?? 0) + packagesCount;
-                await this.customerRepository.updatePackagesDebt(dto.customerId, newPackagesDebt);
-            }
             for (const item of orderItems) {
                 item.orderId = savedOrder.id;
             }

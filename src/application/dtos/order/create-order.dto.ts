@@ -1,5 +1,5 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsArray, IsInt, IsNotEmpty, IsNumber, IsOptional, IsUUID, Min, ValidateNested } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsArray, IsNotEmpty, IsNumber, IsUUID, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 import { CreateOrderItemDto } from './create-order-item.dto';
 
@@ -22,10 +22,4 @@ export class CreateOrderDto {
   @IsNumber({}, { message: 'Le montant payé doit être un nombre' })
   amountPaid: number;
 
-  // nombre d'emballages (facultatif, défaut 0)
-  @ApiPropertyOptional({ example: 0, minimum: 0, description: 'Nombre d\'emballages' })
-  @IsOptional()
-  @IsInt({ message: 'Le nombre d\'emballages doit être un entier' })
-  @Min(0, { message: 'Le nombre d\'emballages doit être supérieur ou égal à 0' })
-  packages?: number = 0;
 }

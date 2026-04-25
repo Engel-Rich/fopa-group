@@ -12,6 +12,7 @@ import { ProductModule } from './infrastructure/modules/product.module';
 import { StockModule } from './infrastructure/modules/stock.module';
 import { CustomerModule } from './infrastructure/modules/customer.module';
 import { OrderModule } from './infrastructure/modules/order.module';
+import { PackageModule } from './infrastructure/modules/package.module';
 import { ReportModule } from './infrastructure/modules/report.module';
 import { AdminSeedService } from './infrastructure/database/seeds/admin.seed';
 import { UserEntity } from './infrastructure/database/entities/user.entity';
@@ -35,6 +36,7 @@ import { UserEntity } from './infrastructure/database/entities/user.entity';
     StockModule,
     CustomerModule,
     OrderModule,
+    PackageModule,
     ReportModule,
   ],
   providers: [
