@@ -63,6 +63,16 @@ import 'package:fopa_sop_apk/features/feat_order/domaines/usecases/add_payment_u
 import 'package:fopa_sop_apk/features/feat_order/domaines/usecases/list_orders_usecase.dart';
 import 'package:fopa_sop_apk/features/feat_order/presentations/controllers/order_provider.dart';
 
+// Package imports
+import 'package:fopa_sop_apk/features/feat_package/datas/services/package_service.dart';
+import 'package:fopa_sop_apk/features/feat_package/datas/repositories_implement/package_repository_impl.dart';
+import 'package:fopa_sop_apk/features/feat_package/domaines/repositories/package_repository.dart';
+import 'package:fopa_sop_apk/features/feat_package/domaines/usecases/lend_packages_usecase.dart';
+import 'package:fopa_sop_apk/features/feat_package/domaines/usecases/return_packages_usecase.dart';
+import 'package:fopa_sop_apk/features/feat_package/domaines/usecases/get_packages_debt_usecase.dart';
+import 'package:fopa_sop_apk/features/feat_package/domaines/usecases/get_packages_history_usecase.dart';
+import 'package:fopa_sop_apk/features/feat_package/presentations/controllers/package_provider.dart';
+
 // Stock imports
 import 'package:fopa_sop_apk/features/feat_stock/datas/services/stock_service.dart';
 import 'package:fopa_sop_apk/features/feat_stock/datas/repositories_implement/stock_repository_impl.dart';
@@ -261,6 +271,34 @@ void initInjectorApp({required SharedPreferences preferences}) {
       getOrderDetailsUseCase: getItInstance<GetOrderDetailsUseCase>(),
       addPaymentUseCase: getItInstance<AddPaymentUseCase>(),
       listOrdersUseCase: getItInstance<ListOrdersUseCase>(),
+    ),
+  );
+
+  // ========== PACKAGE ==========
+  getItInstance.registerLazySingleton<PackageService>(
+    () => PackageService(getItInstance<Dio>()),
+  );
+  getItInstance.registerLazySingleton<PackageRepository>(
+    () => PackageRepositoryImpl(getItInstance<PackageService>()),
+  );
+  getItInstance.registerLazySingleton<LendPackagesUseCase>(
+    () => LendPackagesUseCase(getItInstance<PackageRepository>()),
+  );
+  getItInstance.registerLazySingleton<ReturnPackagesUseCase>(
+    () => ReturnPackagesUseCase(getItInstance<PackageRepository>()),
+  );
+  getItInstance.registerLazySingleton<GetPackagesDebtUseCase>(
+    () => GetPackagesDebtUseCase(getItInstance<PackageRepository>()),
+  );
+  getItInstance.registerLazySingleton<GetPackagesHistoryUseCase>(
+    () => GetPackagesHistoryUseCase(getItInstance<PackageRepository>()),
+  );
+  getItInstance.registerLazySingleton<PackageProvider>(
+    () => PackageProvider(
+      lendPackagesUseCase: getItInstance<LendPackagesUseCase>(),
+      returnPackagesUseCase: getItInstance<ReturnPackagesUseCase>(),
+      getPackagesDebtUseCase: getItInstance<GetPackagesDebtUseCase>(),
+      getPackagesHistoryUseCase: getItInstance<GetPackagesHistoryUseCase>(),
     ),
   );
 

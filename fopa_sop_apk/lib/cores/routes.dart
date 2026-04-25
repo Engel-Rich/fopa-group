@@ -16,6 +16,7 @@ import 'package:fopa_sop_apk/features/feat_order/presentations/screens/create_or
 import 'package:fopa_sop_apk/features/feat_order/presentations/screens/order_summary_print_screen.dart';
 import 'package:fopa_sop_apk/features/feat_order/presentations/screens/order_historique_screen.dart';
 import 'package:fopa_sop_apk/features/feat_product/presentations/screens/products_screen.dart';
+import 'package:fopa_sop_apk/features/feat_package/presentations/screens/package_management_screen.dart';
 import 'package:fopa_sop_apk/features/feat_report/presentations/screens/report_screen.dart';
 import 'package:fopa_sop_apk/features/feat_stock/presentations/screens/manage_stock_screen.dart';
 import 'package:fopa_sop_apk/features/feat_user/datas/models/user_response_model.dart';
@@ -47,6 +48,7 @@ class AppRoutes {
   static const createOrderRoute = "/create-order";
   static const orderSummaryRoute = "/order-summary";
   static const orderHistoriqueRoute = "/order-historique";
+  static const packageManagementRoute = "/package-management";
   static const imagesWidgetTesteRoute = "/images-widget-teste";
   static final GlobalKey<NavigatorState> globalNavigatorKey =
       GlobalKey<NavigatorState>(debugLabel: "root");
@@ -158,6 +160,11 @@ class AppRoutes {
               : null;
           return OrderHistoriqueScreen(customer: customer);
         },
+      ),
+      GoRoute(
+        path: packageManagementRoute,
+        name: packageManagementRoute,
+        builder: (context, state) => const PackageManagementScreen(),
       ),
       GoRoute(
         path: imagesWidgetTesteRoute,

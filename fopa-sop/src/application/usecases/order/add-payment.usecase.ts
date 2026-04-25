@@ -25,10 +25,6 @@ export class AddPaymentUseCase {
   async execute(dto: AddPaymentDto, userId: string): Promise<PaymentResponseDto> {
     const paymentMethod = dto.paymentMethod ?? PaymentMethod.CASH;
 
-    if (paymentMethod === PaymentMethod.MANUAL_PACKAGE) {
-      return this.executePackagesReturn(dto, userId);
-    }
-
     const order = await this.orderRepository.findById(dto.orderId);
     if (!order) {
       throw new NotFoundException('Commande');
@@ -101,82 +97,4 @@ export class AddPaymentUseCase {
     }
   }
 
-  private async executePackagesReturn(dto: AddPaymentDto, userId: string): Promise<PaymentResponseDto> {
-    const order = await this.orderRepository.findById(dto.orderId);
-    if (!order) {
-      throw new NotFoundException('Commande');
-    }
-
-    const packagesReturnedCount = Math.max(0, Math.floor(Number(dto.amount)));
-    if (packagesReturnedCount <= 0) {
-      throw new InvalidOrderException('Le nombre d\'emballages restitués doit être supérieur à 0');
-    }
-
-    const customerId = order.customerId;
-    const ordersWithPackagesDebt = await this.orderRepository.findOrdersWithPackagesDebtByCustomer(customerId);
-    const totalPackagesDebt = ordersWithPackagesDebt.reduce((sum, o) => sum + o.remainingPackages, 0);
-    if (totalPackagesDebt <= 0) {
-      throw new InvalidOrderException('Aucune dette d\'emballages pour ce client');
-    }
-    if (packagesReturnedCount > totalPackagesDebt) {
-      throw new InvalidOrderException(
-        `Le nombre d'emballages restitués (${packagesReturnedCount}) ne peut pas dépasser la dette d'emballages (${totalPackagesDebt})`,
-      );
-    }
-
-    const queryRunner = this.dataSource.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
-
-    try {
-      let remainingPackagesToApply = packagesReturnedCount;
-      let firstSavedPayment: Payment | null = null;
-
-      for (const unpaidOrder of ordersWithPackagesDebt) {
-        if (remainingPackagesToApply <= 0) break;
-
-        const amountToApply = Math.min(unpaidOrder.remainingPackages, remainingPackagesToApply);
-        unpaidOrder.addPackagesReturned(amountToApply);
-
-        await this.orderRepository.update(unpaidOrder.id, {
-          packagesReturned: unpaidOrder.packagesReturned,
-          remainingPackages: unpaidOrder.remainingPackages,
-        });
-
-        const paymentReference = PaymentReferenceGenerator.generate(PaymentMethod.MANUAL_PACKAGE);
-        const payment = new Payment(
-          unpaidOrder.id,
-          amountToApply,
-          PaymentMethod.MANUAL_PACKAGE,
-          userId,
-          paymentReference,
-        );
-        const saved = await this.paymentRepository.create(payment);
-        if (!firstSavedPayment) firstSavedPayment = saved;
-
-        remainingPackagesToApply -= amountToApply;
-      }
-
-      const allOrdersForCustomer = await this.orderRepository.findByCustomerId(customerId);
-      const newPackagesDebt = allOrdersForCustomer.reduce((sum, o) => sum + o.remainingPackages, 0);
-      await this.customerRepository.updatePackagesDebt(customerId, newPackagesDebt);
-
-      await queryRunner.commitTransaction();
-
-      return {
-        id: firstSavedPayment!.id,
-        orderId: firstSavedPayment!.orderId,
-        amount: packagesReturnedCount,
-        paymentMethod: PaymentMethod.MANUAL_PACKAGE,
-        reference: firstSavedPayment!.reference,
-        userId: firstSavedPayment!.userId,
-        createdAt: firstSavedPayment!.createdAt,
-      };
-    } catch (error) {
-      await queryRunner.rollbackTransaction();
-      throw error;
-    } finally {
-      await queryRunner.release();
-    }
-  }
 }

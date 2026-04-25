@@ -11,6 +11,7 @@ import 'package:fopa_sop_apk/features/feat_report/presentations/controllers/repo
 import 'package:fopa_sop_apk/features/feat_stock/presentations/controllers/stock_provider.dart';
 import 'package:fopa_sop_apk/features/feat_category/presentations/controllers/category_provider.dart';
 import 'package:fopa_sop_apk/features/feat_user/presentations/controllers/user_provider.dart';
+import 'package:fopa_sop_apk/features/feat_package/presentations/controllers/package_provider.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -68,6 +69,10 @@ class MyApp extends StatelessWidget {
         // customer provider
         ChangeNotifierProvider<CustomerProvider>(
           create: (context) => GetIt.instance<CustomerProvider>(),
+        ),
+        // package provider
+        ChangeNotifierProvider<PackageProvider>(
+          create: (context) => GetIt.instance<PackageProvider>(),
         ),
       ],
       child: UnfocusWrapper(

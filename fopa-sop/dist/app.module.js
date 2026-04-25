@@ -21,6 +21,7 @@ const product_module_1 = require("./infrastructure/modules/product.module");
 const stock_module_1 = require("./infrastructure/modules/stock.module");
 const customer_module_1 = require("./infrastructure/modules/customer.module");
 const order_module_1 = require("./infrastructure/modules/order.module");
+const package_module_1 = require("./infrastructure/modules/package.module");
 const report_module_1 = require("./infrastructure/modules/report.module");
 const admin_seed_1 = require("./infrastructure/database/seeds/admin.seed");
 const user_entity_1 = require("./infrastructure/database/entities/user.entity");
@@ -47,6 +48,7 @@ exports.AppModule = AppModule = __decorate([
             stock_module_1.StockModule,
             customer_module_1.CustomerModule,
             order_module_1.OrderModule,
+            package_module_1.PackageModule,
             report_module_1.ReportModule,
         ],
         providers: [

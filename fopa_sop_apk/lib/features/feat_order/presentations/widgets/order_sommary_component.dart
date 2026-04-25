@@ -12,8 +12,6 @@ class OrderSummaryComponent extends StatelessWidget {
   final double amountPaid;
   final double grandTotal;
   final ValueChanged<double> onAmountPaidChanged;
-  final int packages;
-  final ValueChanged<int> onPackagesChanged;
 
   const OrderSummaryComponent({
     super.key,
@@ -22,23 +20,18 @@ class OrderSummaryComponent extends StatelessWidget {
     required this.amountPaid,
     required this.grandTotal,
     required this.onAmountPaidChanged,
-    this.packages = 0,
-    required this.onPackagesChanged,
   });
 
-  void _showEditDialog(BuildContext context, {bool isAmountPaid = true}) {
+  void _showEditDialog(BuildContext context) {
     final amountController = TextEditingController(
       text: amountPaid > 0 ? amountPaid.toInt().toString() : '',
-    );
-    final packagesController = TextEditingController(
-      text: packages > 0 ? packages.toString() : '',
     );
 
     showDialog(
       context: context,
       builder: (dialogContext) => AlertDialog(
         title: SimpleText(
-          text: isAmountPaid ? "Montant payé" : "Nombre d'emballages",
+          text: "Montant payé",
           weight: FontWeight.bold,
           color: context.titleLargeColor,
         ),
@@ -46,51 +39,27 @@ class OrderSummaryComponent extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (isAmountPaid) ...[
-              SimpleText(
-                text: "Montant payé (FCFA)",
-                color: context.titleLargeColor,
+            SimpleText(
+              text: "Montant payé (FCFA)",
+              color: context.titleLargeColor,
+            ),
+            spacerHeight(8),
+            TextFieldApp(
+              controller: amountController,
+              decoration: inputDecorationApp(
+                context: context,
+              ).copyWith(hintText: "0"),
+              radius: 8,
+              keyboardType: TextInputType.number,
+              inputFormaters: [FilteringTextInputFormatter.digitsOnly],
+              style: appTextStyle.copyWith(fontSize: 20),
+              onchange: (_) {},
+              containsPadding: EdgeInsets.symmetric(
+                horizontal: 12,
+                vertical: 8,
               ),
-              spacerHeight(8),
-              TextFieldApp(
-                controller: amountController,
-                decoration: inputDecorationApp(
-                  context: context,
-                ).copyWith(hintText: "0"),
-                radius: 8,
-                keyboardType: TextInputType.number,
-                inputFormaters: [FilteringTextInputFormatter.digitsOnly],
-                style: appTextStyle.copyWith(fontSize: 20),
-                onchange: (_) {},
-                containsPadding: EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 8,
-                ),
-              ),
-              spacerHeight(16),
-            ] else ...[
-              SimpleText(
-                text: "Nombre d'emballages",
-                color: context.titleLargeColor,
-              ),
-              spacerHeight(8),
-              TextFieldApp(
-                controller: packagesController,
-                decoration: inputDecorationApp(
-                  context: context,
-                ).copyWith(hintText: "0"),
-                radius: 8,
-                keyboardType: TextInputType.number,
-                inputFormaters: [FilteringTextInputFormatter.digitsOnly],
-                style: appTextStyle.copyWith(fontSize: 20),
-                onchange: (_) {},
-                containsPadding: EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 8,
-                ),
-              ),
-              spacerHeight(16),
-            ],
+            ),
+            spacerHeight(16),
           ],
         ),
         actions: [
@@ -101,7 +70,6 @@ class OrderSummaryComponent extends StatelessWidget {
           TextButton(
             onPressed: () {
               onAmountPaidChanged(double.tryParse(amountController.text) ?? 0);
-              onPackagesChanged(int.tryParse(packagesController.text) ?? 0);
               Navigator.of(dialogContext).pop();
             },
             child: SimpleText(
@@ -155,38 +123,7 @@ class OrderSummaryComponent extends StatelessWidget {
                   ),
                   spacerWidth(3),
                   InkWell(
-                    onTap: () => _showEditDialog(context, isAmountPaid: true),
-                    borderRadius: BorderRadius.circular(20),
-                    child: Padding(
-                      padding: EdgeInsets.all(4),
-                      child: Icon(
-                        Icons.edit,
-                        size: 20,
-                        color: context.primaryColor,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          spacerHeight(8),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SimpleText(text: "Emballages:", color: context.titleLargeColor),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SimpleText(
-                    text: "$packages",
-                    size: 14,
-                    weight: FontWeight.w600,
-                    color: context.titleLargeColor,
-                  ),
-                  spacerWidth(6),
-                  InkWell(
-                    onTap: () => _showEditDialog(context, isAmountPaid: false),
+                    onTap: () => _showEditDialog(context),
                     borderRadius: BorderRadius.circular(20),
                     child: Padding(
                       padding: EdgeInsets.all(4),

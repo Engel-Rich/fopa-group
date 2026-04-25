@@ -15,6 +15,46 @@ import 'package:fopa_sop_apk/features/feat_order/presentations/widgets/order_com
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+class _IconCard extends StatelessWidget {
+  final String title;
+  final IconData icon;
+  final VoidCallback onTap;
+  const _IconCard({required this.title, required this.icon, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        GestureDetector(
+          onTap: onTap,
+          child: Container(
+            width: SizeConfig.screenWidth * 0.190,
+            height: SizeConfig.screenWidth * 0.190,
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: context.tertiary,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Icon(icon, color: context.primaryColor, size: 32),
+          ),
+        ),
+        const SizedBox(height: 8),
+        SizedBox(
+          width: SizeConfig.screenWidth * 0.190,
+          child: SimpleText(
+            text: title,
+            size: 12,
+            textAlign: TextAlign.center,
+            weight: FontWeight.w600,
+            color: context.titleLargeColor,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -112,6 +152,13 @@ class HomeScreen extends StatelessWidget {
                       children: [
                         for (var i = 0; i < 4; i++)
                           HomeCardWidget(homeCardElements: homeCardElements[i]),
+                        _IconCard(
+                          title: "Emballages",
+                          icon: Icons.inventory_2_outlined,
+                          onTap: () => context.pushNamed(
+                            AppRoutes.packageManagementRoute,
+                          ),
+                        ),
                       ],
                     ),
                   ),

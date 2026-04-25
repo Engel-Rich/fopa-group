@@ -45,7 +45,6 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
   final List<OrderProduct> _orderProducts = [];
   final _amountPaidController = TextEditingController();
   double _amountPaid = 0.0;
-  int _packages = 0;
 
   @override
   void dispose() {
@@ -189,7 +188,6 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
           )
           .toList(),
       amountPaid: _amountPaid,
-      packages: _packages,
     );
 
     // Créer la commande via le provider
@@ -310,12 +308,6 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                   onAmountPaidChanged: (value) {
                     setState(() {
                       _amountPaid = value;
-                    });
-                  },
-                  packages: _packages,
-                  onPackagesChanged: (value) {
-                    setState(() {
-                      _packages = value;
                     });
                   },
                 ),

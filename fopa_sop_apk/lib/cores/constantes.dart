@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fopa_sop_apk/cores/app_theme.dart';
 import 'package:fopa_sop_apk/cores/size_config.dart';
 
-const String baseUrl = "http://10.207.240.104:8085"; //"https://10.0.2.2:8085";
+const String baseUrl = "http://192.168.43.252:8085"; //"https://10.0.2.2:8085";
 // const String baseUrl = "http://192.168.1.69:8085"; //"https://10.0.2.2:8085";
 // final _senraisePrinterPlugin = SenraisePrinter();
 

@@ -11,5 +11,4 @@ export declare class AddPaymentUseCase {
     private readonly dataSource;
     constructor(orderRepository: IOrderRepository, paymentRepository: IPaymentRepository, customerRepository: ICustomerRepository, dataSource: DataSource);
     execute(dto: AddPaymentDto, userId: string): Promise<PaymentResponseDto>;
-    private executePackagesReturn;
 }
