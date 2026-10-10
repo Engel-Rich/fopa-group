@@ -8,11 +8,10 @@ COPY package*.json ./
 # Installer toutes les dépendances (dev + prod) pour compiler TS
 RUN npm install --legacy-peer-deps
 
-RUN npm install -g @nestjs/cli && npm install --only=production
-
 COPY . .
 
-RUN nest build
+# Compiler avec le CLI Nest local (devDependency), puis retirer les deps de dev
+RUN npm run build && npm prune --omit=dev --legacy-peer-deps
 
 # Étape 2 : Runtime
 FROM node:20-alpine

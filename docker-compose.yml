@@ -8,8 +8,6 @@ services:
     ports:
       - "8085:3000"
     volumes:
-      - .:/app
-      - /app/node_modules
       - ./uploads:/app/uploads
     env_file:
       - .env
@@ -19,7 +17,7 @@ services:
       - network
 
   db:
-    image: postgres:16-alpine
+    image: postgres:15-alpine
     container_name: fopa-sop-db
     environment:
       POSTGRES_USER: ${DB_USER}
@@ -27,6 +25,8 @@ services:
       POSTGRES_DB: ${DB_NAME}
     volumes:
       - pgdata:/var/lib/postgresql/data
+    networks:
+      - network
 volumes:
   pgdata:
 
