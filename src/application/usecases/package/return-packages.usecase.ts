@@ -5,6 +5,7 @@ import { PackageTransaction, PackageTransactionType } from '../../../domain/enti
 import { NotFoundException, InvalidOrderException } from '../../../shared/exceptions/business.exception';
 import { ReturnPackagesDto } from '../../dtos/package/return-packages.dto';
 import { PackageTransactionResponseDto } from '../../dtos/package/package-transaction-response.dto';
+import { toPackageTransactionResponse } from './package-transaction.presenter';
 
 @Injectable()
 export class ReturnPackagesUseCase {
@@ -29,26 +30,32 @@ export class ReturnPackagesUseCase {
       );
     }
 
-    const transaction = new PackageTransaction(
-      dto.customerId,
-      PackageTransactionType.RETURN,
-      dto.quantity,
-      userId,
-      dto.notes,
-    );
-    const saved = await this.packageTransactionRepository.create(transaction);
+    // Décrément atomique et conditionnel : la dette ne peut jamais devenir négative,
+    // même si deux remboursements sont saisis simultanément.
+    const updated = await this.customerRepository.adjustPackagesDebt(dto.customerId, -dto.quantity);
+    if (!updated) {
+      throw new InvalidOrderException(
+        "La dette d'emballages a changé entre-temps, veuillez actualiser et réessayer",
+      );
+    }
 
-    const newDebt = currentDebt - dto.quantity;
-    await this.customerRepository.updatePackagesDebt(dto.customerId, newDebt);
+    let saved: PackageTransaction;
+    try {
+      saved = await this.packageTransactionRepository.create(
+        new PackageTransaction(
+          dto.customerId,
+          PackageTransactionType.RETURN,
+          dto.quantity,
+          userId,
+          dto.notes,
+        ),
+      );
+    } catch (error) {
+      await this.customerRepository.adjustPackagesDebt(dto.customerId, dto.quantity);
+      throw error;
+    }
 
-    return {
-      id: saved.id,
-      customerId: saved.customerId,
-      type: saved.type,
-      quantity: saved.quantity,
-      userId: saved.userId,
-      notes: saved.notes,
-      createdAt: saved.createdAt,
-    };
+    saved.customerName = saved.customerName ?? customer.name;
+    return toPackageTransactionResponse(saved, updated.currentPackagesDebt);
   }
 }

@@ -117,4 +117,32 @@ export class CustomerRepository implements ICustomerRepository {
     }
     return CustomerMapper.toDomain(updated);
   }
+
+  async adjustPackagesDebt(id: string, delta: number): Promise<Customer | null> {
+    const qb = this.repository
+      .createQueryBuilder()
+      .update(CustomerEntity)
+      .set({ currentPackagesDebt: () => '"currentPackagesDebt" + :delta' })
+      .where('id = :id')
+      .setParameters({ id, delta });
+    if (delta < 0) {
+      // Empêche toute dette négative, même en cas de requêtes concurrentes
+      qb.andWhere('"currentPackagesDebt" + :delta >= 0');
+    }
+    const result = await qb.execute();
+    if (!result.affected) {
+      return null;
+    }
+    return this.findById(id);
+  }
+
+  async findWithPackagesDebt(): Promise<Customer[]> {
+    const entities = await this.repository
+      .createQueryBuilder('customer')
+      .leftJoinAndSelect('customer.user', 'user')
+      .where('customer.currentPackagesDebt > 0')
+      .orderBy('customer.currentPackagesDebt', 'DESC')
+      .getMany();
+    return entities.map((entity) => CustomerMapper.toDomain(entity));
+  }
 }

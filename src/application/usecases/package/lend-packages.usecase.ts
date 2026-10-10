@@ -5,6 +5,7 @@ import { PackageTransaction, PackageTransactionType } from '../../../domain/enti
 import { NotFoundException, InvalidOrderException } from '../../../shared/exceptions/business.exception';
 import { LendPackagesDto } from '../../dtos/package/lend-packages.dto';
 import { PackageTransactionResponseDto } from '../../dtos/package/package-transaction-response.dto';
+import { toPackageTransactionResponse } from './package-transaction.presenter';
 
 @Injectable()
 export class LendPackagesUseCase {
@@ -20,26 +21,28 @@ export class LendPackagesUseCase {
     if (!customer) throw new NotFoundException('Client');
     if (!customer.isActive) throw new InvalidOrderException('Le client est désactivé');
 
-    const transaction = new PackageTransaction(
-      dto.customerId,
-      PackageTransactionType.LEND,
-      dto.quantity,
-      userId,
-      dto.notes,
-    );
-    const saved = await this.packageTransactionRepository.create(transaction);
+    // Incrément atomique de la dette d'emballages (indépendante de la dette produits)
+    const updated = await this.customerRepository.adjustPackagesDebt(dto.customerId, dto.quantity);
+    if (!updated) throw new NotFoundException('Client');
 
-    const newDebt = (customer.currentPackagesDebt ?? 0) + dto.quantity;
-    await this.customerRepository.updatePackagesDebt(dto.customerId, newDebt);
+    let saved: PackageTransaction;
+    try {
+      saved = await this.packageTransactionRepository.create(
+        new PackageTransaction(
+          dto.customerId,
+          PackageTransactionType.LEND,
+          dto.quantity,
+          userId,
+          dto.notes,
+        ),
+      );
+    } catch (error) {
+      // Compensation : on annule l'incrément si l'opération n'a pas pu être tracée
+      await this.customerRepository.adjustPackagesDebt(dto.customerId, -dto.quantity);
+      throw error;
+    }
 
-    return {
-      id: saved.id,
-      customerId: saved.customerId,
-      type: saved.type,
-      quantity: saved.quantity,
-      userId: saved.userId,
-      notes: saved.notes,
-      createdAt: saved.createdAt,
-    };
+    saved.customerName = saved.customerName ?? customer.name;
+    return toPackageTransactionResponse(saved, updated.currentPackagesDebt);
   }
 }
