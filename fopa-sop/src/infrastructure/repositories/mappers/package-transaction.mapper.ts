@@ -12,6 +12,8 @@ export class PackageTransactionMapper {
     );
     transaction.id = entity.id;
     transaction.createdAt = entity.createdAt;
+    transaction.customerName = entity.customer?.user?.name;
+    transaction.userName = entity.user?.name;
     return transaction;
   }
 

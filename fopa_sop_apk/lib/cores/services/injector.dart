@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:fopa_sop_apk/features/feat_user/domaines/usecases/sing_out_usecase.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fopa_sop_apk/cores/services/api_services.dart';
@@ -71,6 +70,8 @@ import 'package:fopa_sop_apk/features/feat_package/domaines/usecases/lend_packag
 import 'package:fopa_sop_apk/features/feat_package/domaines/usecases/return_packages_usecase.dart';
 import 'package:fopa_sop_apk/features/feat_package/domaines/usecases/get_packages_debt_usecase.dart';
 import 'package:fopa_sop_apk/features/feat_package/domaines/usecases/get_packages_history_usecase.dart';
+import 'package:fopa_sop_apk/features/feat_package/domaines/usecases/list_packages_debts_usecase.dart';
+import 'package:fopa_sop_apk/features/feat_package/domaines/usecases/list_package_transactions_usecase.dart';
 import 'package:fopa_sop_apk/features/feat_package/presentations/controllers/package_provider.dart';
 
 // Stock imports
@@ -293,12 +294,21 @@ void initInjectorApp({required SharedPreferences preferences}) {
   getItInstance.registerLazySingleton<GetPackagesHistoryUseCase>(
     () => GetPackagesHistoryUseCase(getItInstance<PackageRepository>()),
   );
+  getItInstance.registerLazySingleton<ListPackagesDebtsUseCase>(
+    () => ListPackagesDebtsUseCase(getItInstance<PackageRepository>()),
+  );
+  getItInstance.registerLazySingleton<ListPackageTransactionsUseCase>(
+    () => ListPackageTransactionsUseCase(getItInstance<PackageRepository>()),
+  );
   getItInstance.registerLazySingleton<PackageProvider>(
     () => PackageProvider(
       lendPackagesUseCase: getItInstance<LendPackagesUseCase>(),
       returnPackagesUseCase: getItInstance<ReturnPackagesUseCase>(),
       getPackagesDebtUseCase: getItInstance<GetPackagesDebtUseCase>(),
       getPackagesHistoryUseCase: getItInstance<GetPackagesHistoryUseCase>(),
+      listPackagesDebtsUseCase: getItInstance<ListPackagesDebtsUseCase>(),
+      listPackageTransactionsUseCase:
+          getItInstance<ListPackageTransactionsUseCase>(),
     ),
   );
 

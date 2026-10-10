@@ -12,4 +12,10 @@ export interface ICustomerRepository {
   delete(id: string): Promise<void>;
   updateDebt(id: string, debt: number): Promise<Customer>;
   updatePackagesDebt(id: string, packagesDebt: number): Promise<Customer>;
+  /**
+   * Ajuste atomiquement la dette d'emballages (delta positif = prêt, négatif = retour).
+   * Retourne null si le client n'existe pas ou si la dette deviendrait négative.
+   */
+  adjustPackagesDebt(id: string, delta: number): Promise<Customer | null>;
+  findWithPackagesDebt(): Promise<Customer[]>;
 }

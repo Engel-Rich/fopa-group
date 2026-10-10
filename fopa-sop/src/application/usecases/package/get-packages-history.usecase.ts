@@ -3,6 +3,7 @@ import type { ICustomerRepository } from '../../../domain/repositories/customer.
 import type { IPackageTransactionRepository } from '../../../domain/repositories/package-transaction.repository.interface';
 import { NotFoundException } from '../../../shared/exceptions/business.exception';
 import { PackageTransactionResponseDto } from '../../dtos/package/package-transaction-response.dto';
+import { toPackageTransactionResponse } from './package-transaction.presenter';
 
 @Injectable()
 export class GetPackagesHistoryUseCase {
@@ -18,14 +19,6 @@ export class GetPackagesHistoryUseCase {
     if (!customer) throw new NotFoundException('Client');
 
     const transactions = await this.packageTransactionRepository.findByCustomerId(customerId);
-    return transactions.map((t) => ({
-      id: t.id,
-      customerId: t.customerId,
-      type: t.type,
-      quantity: t.quantity,
-      userId: t.userId,
-      notes: t.notes,
-      createdAt: t.createdAt,
-    }));
+    return transactions.map((t) => toPackageTransactionResponse(t));
   }
 }

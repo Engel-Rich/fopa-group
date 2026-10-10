@@ -3,6 +3,8 @@ import 'package:fopa_sop_apk/features/feat_package/datas/dtos/lend_packages_dto.
 import 'package:fopa_sop_apk/features/feat_package/datas/dtos/return_packages_dto.dart';
 import 'package:fopa_sop_apk/features/feat_package/datas/models/package_transaction_model.dart';
 import 'package:fopa_sop_apk/features/feat_package/datas/models/packages_debt_model.dart';
+import 'package:fopa_sop_apk/features/feat_package/datas/models/packages_debts_summary_model.dart';
+import 'package:fopa_sop_apk/features/feat_package/datas/models/package_transaction_list_model.dart';
 
 class PackageService {
   final Dio dio;
@@ -24,10 +26,33 @@ class PackageService {
     return PackagesDebtModel.fromJson(response.data);
   }
 
-  Future<List<PackageTransactionModel>> getPackagesHistory(String customerId) async {
+  Future<List<PackageTransactionModel>> getPackagesHistory(
+    String customerId,
+  ) async {
     final response = await dio.get('/packages/history/$customerId');
     return (response.data as List)
         .map((e) => PackageTransactionModel.fromJson(e as Map<String, dynamic>))
         .toList();
+  }
+
+  Future<PackagesDebtsSummaryModel> getPackagesDebts() async {
+    final response = await dio.get('/packages/debts');
+    return PackagesDebtsSummaryModel.fromJson(response.data);
+  }
+
+  Future<PackageTransactionListModel> getPackageTransactions({
+    PackageTransactionType? type,
+    int limit = 50,
+    int offset = 0,
+  }) async {
+    final response = await dio.get(
+      '/packages/transactions',
+      queryParameters: {
+        'limit': limit,
+        'offset': offset,
+        if (type != null) 'type': type.name,
+      },
+    );
+    return PackageTransactionListModel.fromJson(response.data);
   }
 }

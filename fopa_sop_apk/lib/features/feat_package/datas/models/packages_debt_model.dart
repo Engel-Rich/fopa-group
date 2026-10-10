@@ -10,12 +10,12 @@ class PackagesDebtModel {
   factory PackagesDebtModel.fromJson(Map<String, dynamic> json) {
     return PackagesDebtModel(
       customerId: json['customerId'] as String,
-      currentPackagesDebt: json['currentPackagesDebt'] as int,
+      currentPackagesDebt: (json['currentPackagesDebt'] as num).toInt(),
     );
   }
 
   Map<String, dynamic> toJson() => {
-        'customerId': customerId,
-        'currentPackagesDebt': currentPackagesDebt,
-      };
+    'customerId': customerId,
+    'currentPackagesDebt': currentPackagesDebt,
+  };
 }

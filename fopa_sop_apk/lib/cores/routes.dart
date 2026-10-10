@@ -164,7 +164,12 @@ class AppRoutes {
       GoRoute(
         path: packageManagementRoute,
         name: packageManagementRoute,
-        builder: (context, state) => const PackageManagementScreen(),
+        builder: (context, state) {
+          final customer = state.extra is CustomerResponseModel
+              ? state.extra as CustomerResponseModel
+              : null;
+          return PackageManagementScreen(initialCustomer: customer);
+        },
       ),
       GoRoute(
         path: imagesWidgetTesteRoute,

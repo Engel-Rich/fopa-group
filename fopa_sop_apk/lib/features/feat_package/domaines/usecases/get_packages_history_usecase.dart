@@ -7,7 +7,9 @@ class GetPackagesHistoryUseCase {
 
   GetPackagesHistoryUseCase(this.packageRepository);
 
-  Future<AppState<List<PackageTransactionModel>>> call(String customerId) async {
+  Future<AppState<List<PackageTransactionModel>>> call(
+    String customerId,
+  ) async {
     try {
       final result = await packageRepository.getPackagesHistory(customerId);
       return AppState.completed(result);

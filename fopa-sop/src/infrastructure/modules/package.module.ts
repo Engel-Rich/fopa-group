@@ -5,6 +5,8 @@ import { LendPackagesUseCase } from '../../application/usecases/package/lend-pac
 import { ReturnPackagesUseCase } from '../../application/usecases/package/return-packages.usecase';
 import { GetPackagesDebtUseCase } from '../../application/usecases/package/get-packages-debt.usecase';
 import { GetPackagesHistoryUseCase } from '../../application/usecases/package/get-packages-history.usecase';
+import { ListPackagesDebtsUseCase } from '../../application/usecases/package/list-packages-debts.usecase';
+import { ListPackageTransactionsUseCase } from '../../application/usecases/package/list-package-transactions.usecase';
 import { PackageTransactionRepository } from '../repositories/package-transaction.repository';
 import { CustomerRepository } from '../repositories/customer.repository';
 import { PackageTransactionEntity } from '../database/entities/package-transaction.entity';
@@ -20,6 +22,8 @@ import { CustomerEntity } from '../database/entities/customer.entity';
     ReturnPackagesUseCase,
     GetPackagesDebtUseCase,
     GetPackagesHistoryUseCase,
+    ListPackagesDebtsUseCase,
+    ListPackageTransactionsUseCase,
     {
       provide: 'IPackageTransactionRepository',
       useClass: PackageTransactionRepository,

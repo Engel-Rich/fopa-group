@@ -74,13 +74,23 @@ class OrderComponent extends StatelessWidget {
             ListTile(
               leading: const Icon(Icons.inventory_2_outlined),
               title: SimpleText(
-                text: "Rembourser les emballages",
+                text: "Gérer les emballages du client",
                 size: 14,
                 color: context.titleLargeColor,
               ),
+              subtitle: SimpleText(
+                text: "Dette d'emballages séparée de la commande",
+                size: 11,
+                color: context.titleLargeColor.withAppOppacity(0.6),
+              ),
               onTap: () {
                 Navigator.of(ctx).pop();
-                _showPackagesDialog(context);
+                // Les emballages ne passent plus par le paiement de la
+                // commande : ils sont gérés dans le module Emballages.
+                context.pushNamed(
+                  AppRoutes.packageManagementRoute,
+                  extra: order.customer,
+                );
               },
             ),
           ],
@@ -175,91 +185,6 @@ class OrderComponent extends StatelessWidget {
                       state.errorModel?.error ?? "Erreur lors du paiement",
                     ),
                   ),
-                );
-              }
-            },
-            child: SimpleText(
-              text: "Valider",
-              color: AppThemes.primaryVariant,
-              weight: FontWeight.w600,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _showPackagesDialog(BuildContext context) {
-    final packagesController = TextEditingController();
-    showDialog<void>(
-      context: context,
-      builder: (dialogContext) => AlertDialog(
-        title: SimpleText(
-          text: "Rembourser les emballages",
-          weight: FontWeight.bold,
-          color: context.titleLargeColor,
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SimpleText(
-              text: "Nombre d'emballages restitués",
-              size: 14,
-              color: context.titleLargeColor,
-            ),
-            spacerHeight(8),
-            TextFieldApp(
-              controller: packagesController,
-              decoration: inputDecorationApp(
-                context: context,
-              ).copyWith(hintText: "0"),
-              radius: 8,
-              keyboardType: TextInputType.number,
-              inputFormaters: [FilteringTextInputFormatter.digitsOnly],
-              onchange: (_) {},
-              containsPadding: const EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: 8,
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(dialogContext).pop(),
-            child: SimpleText(text: "Annuler", color: context.titleLargeColor),
-          ),
-          TextButton(
-            onPressed: () async {
-              final count = int.tryParse(packagesController.text);
-              if (count == null || count <= 0) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text(
-                      "Le nombre d'emballages doit être supérieur à 0",
-                    ),
-                  ),
-                );
-                return;
-              }
-              final orderProvider = context.read<OrderProvider>();
-              final state = await orderProvider.addPayment(
-                AddPaymentDto(
-                  orderId: order.id,
-                  amount: count.toDouble(),
-                  paymentMethod: PaymentMethod.MANUAL_PACKAGE,
-                ),
-              );
-              if (!dialogContext.mounted) return;
-              Navigator.of(dialogContext).pop();
-              if (state.hasNotNullData) {
-                onPaymentSuccess?.call();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("Emballages enregistrés")),
-                );
-              } else if (state.hasError) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(state.errorModel?.error ?? "Erreur")),
                 );
               }
             },

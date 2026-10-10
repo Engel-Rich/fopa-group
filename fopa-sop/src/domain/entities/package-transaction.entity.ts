@@ -11,6 +11,9 @@ export class PackageTransaction {
   userId: string;
   notes?: string;
   createdAt: Date;
+  // Champs de lecture (renseignés quand les relations sont chargées)
+  customerName?: string;
+  userName?: string;
 
   constructor(
     customerId: string,

@@ -1,14 +1,19 @@
-import { Controller, Get, Post, Body, Param, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Query, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { LendPackagesUseCase } from '../../application/usecases/package/lend-packages.usecase';
 import { ReturnPackagesUseCase } from '../../application/usecases/package/return-packages.usecase';
 import { GetPackagesDebtUseCase } from '../../application/usecases/package/get-packages-debt.usecase';
 import { GetPackagesHistoryUseCase } from '../../application/usecases/package/get-packages-history.usecase';
+import { ListPackagesDebtsUseCase } from '../../application/usecases/package/list-packages-debts.usecase';
+import { ListPackageTransactionsUseCase } from '../../application/usecases/package/list-package-transactions.usecase';
+import { ListPackageTransactionsQueryDto } from '../../application/dtos/package/list-package-transactions-query.dto';
 import { LendPackagesDto } from '../../application/dtos/package/lend-packages.dto';
 import { ReturnPackagesDto } from '../../application/dtos/package/return-packages.dto';
 import {
   PackageTransactionResponseDto,
   PackagesDebtResponseDto,
+  PackagesDebtsSummaryResponseDto,
+  PackageTransactionListResponseDto,
 } from '../../application/dtos/package/package-transaction-response.dto';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { RolesGuard } from '../guards/roles.guard';
@@ -26,7 +31,27 @@ export class PackageController {
     private readonly returnPackagesUseCase: ReturnPackagesUseCase,
     private readonly getPackagesDebtUseCase: GetPackagesDebtUseCase,
     private readonly getPackagesHistoryUseCase: GetPackagesHistoryUseCase,
+    private readonly listPackagesDebtsUseCase: ListPackagesDebtsUseCase,
+    private readonly listPackageTransactionsUseCase: ListPackageTransactionsUseCase,
   ) {}
+
+  @Get('debts')
+  @Roles(UserRole.ADMIN, UserRole.CAISSIERE)
+  @ApiOperation({ summary: "Liste des clients ayant une dette d'emballages, avec les totaux" })
+  @ApiResponse({ status: 200, type: PackagesDebtsSummaryResponseDto })
+  async listDebts(): Promise<PackagesDebtsSummaryResponseDto> {
+    return this.listPackagesDebtsUseCase.execute();
+  }
+
+  @Get('transactions')
+  @Roles(UserRole.ADMIN, UserRole.CAISSIERE)
+  @ApiOperation({ summary: "Journal global des prêts et remboursements d'emballages" })
+  @ApiResponse({ status: 200, type: PackageTransactionListResponseDto })
+  async listTransactions(
+    @Query() query: ListPackageTransactionsQueryDto,
+  ): Promise<PackageTransactionListResponseDto> {
+    return this.listPackageTransactionsUseCase.execute(query);
+  }
 
   @Post('lend')
   @Roles(UserRole.ADMIN, UserRole.CAISSIERE)

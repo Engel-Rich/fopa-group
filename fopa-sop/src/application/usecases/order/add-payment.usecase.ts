@@ -25,6 +25,14 @@ export class AddPaymentUseCase {
   async execute(dto: AddPaymentDto, userId: string): Promise<PaymentResponseDto> {
     const paymentMethod = dto.paymentMethod ?? PaymentMethod.CASH;
 
+    // Les dettes d'emballages sont gérées par le module Emballages (/packages),
+    // elles ne doivent jamais impacter la dette (en argent) d'une commande.
+    if (paymentMethod === PaymentMethod.MANUAL_PACKAGE) {
+      throw new InvalidOrderException(
+        "Les remboursements d'emballages se font via le module Emballages (POST /packages/return)",
+      );
+    }
+
     const order = await this.orderRepository.findById(dto.orderId);
     if (!order) {
       throw new NotFoundException('Commande');
